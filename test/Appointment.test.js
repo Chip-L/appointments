@@ -1,32 +1,30 @@
-const React = require("react");
-const ReactDOM = require("react-dom/client");
-const { act } = require("react-dom/test-utils");
-const { Appointment } = require("../src/Appointment");
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { act } from "react-dom/test-utils";
+import { Appointment } from "../src/Appointment";
 
 describe("Appointment", () => {
-  it("renders the customer first name", () => {
-    const customer = { firstName: "Ashley" };
-    const component = <Appointment customer={customer} />;
-    const container = document.createElement("div");
+  let container;
 
-    document.body.replaceChildren(container);
+  const render = (component) =>
     act(() => {
       ReactDOM.createRoot(container).render(component);
     });
 
+  beforeEach(() => {
+    container = document.createElement("div");
+    document.body.replaceChildren(container);
+  });
+
+  it("renders the customer first name", () => {
+    const customer = { firstName: "Ashley" };
+    render(<Appointment customer={customer} />);
     expect(document.body.textContent).toContain(customer.firstName);
   });
 
   it("renders another customer first name", () => {
     const customer = { firstName: "Jordan" };
-    const component = <Appointment customer={customer} />;
-    const container = document.createElement("div");
-
-    document.body.replaceChildren(container);
-    act(() => {
-      ReactDOM.createRoot(container).render(component);
-    });
-
+    render(<Appointment customer={customer} />);
     expect(document.body.textContent).toContain(customer.firstName);
   });
 });
