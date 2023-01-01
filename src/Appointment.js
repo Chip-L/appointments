@@ -1,1 +1,1 @@
-export const Appointment = () => "Ashley";
+export const Appointment = ({ customer }) => customer.firstName;
