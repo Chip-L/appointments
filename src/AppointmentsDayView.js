@@ -16,7 +16,7 @@ const formatPhoneNumber = (number) => {
 };
 
 export const Appointment = (props) => {
-  const { customer, startsAt } = props;
+  const { customer, startsAt, stylist, service } = props;
   // console.log(props);
   return (
     <div id="appointmentView">
@@ -32,6 +32,14 @@ export const Appointment = (props) => {
           <tr>
             <td>Phone Number</td>
             <td>{formatPhoneNumber(customer.phoneNumber)}</td>
+          </tr>
+          <tr>
+            <td>Stylist</td>
+            <td>{stylist}</td>
+          </tr>
+          <tr>
+            <td>Service</td>
+            <td>{service}</td>
           </tr>
         </tbody>
       </table>

@@ -111,6 +111,30 @@ describe("Appointment", () => {
       render(<Appointment customer={customer} />);
       expect(appointmentTable().textContent).toContain("(123) 555-8998");
     });
+
+    it("renders the stylist's name", () => {
+      const stylist = "Maggie";
+      render(<Appointment customer={blankCustomer} stylist={stylist} />);
+      expect(appointmentTable().textContent).toContain("Maggie");
+    });
+
+    it("renders another stylist's name", () => {
+      const stylist = "Jodie";
+      render(<Appointment customer={blankCustomer} stylist={stylist} />);
+      expect(appointmentTable().textContent).toContain("Jodie");
+    });
+
+    it("renders the service", () => {
+      const service = "Beard Trim";
+      render(<Appointment customer={blankCustomer} service={service} />);
+      expect(appointmentTable().textContent).toContain("Beard Trim");
+    });
+
+    it("renders another service", () => {
+      const service = "Cut";
+      render(<Appointment customer={blankCustomer} service={service} />);
+      expect(appointmentTable().textContent).toContain("Cut");
+    });
   });
 });
 
