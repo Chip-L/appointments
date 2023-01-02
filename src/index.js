@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { sampleAppointments } from "../data/sampleData";
-import { AppointmentsDayView } from "./Appointment";
+import { AppointmentsDayView } from "./AppointmentsDayView";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
