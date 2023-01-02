@@ -18,3 +18,5 @@ export const click = (element) => {
 };
 
 export const element = (selector) => document.querySelector(selector);
+
+export const elements = (selector) => document.querySelectorAll(selector);

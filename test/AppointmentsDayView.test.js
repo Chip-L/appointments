@@ -3,6 +3,7 @@ import { Appointment, AppointmentsDayView } from "../src/AppointmentsDayView";
 import {
   click,
   element,
+  elements,
   initializeReactContainer,
   render,
 } from "./reactTestExtensions";
@@ -171,15 +172,13 @@ describe("AppointmentsDayView", () => {
   it("renders an li element for each appointment", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
 
-    const listChildren = document.querySelectorAll("ol > li");
-
-    expect(listChildren).toHaveLength(2);
+    expect(elements("ol > li")).toHaveLength(2);
   });
 
   it("renders the time of each appointment", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
 
-    const listChildren = document.querySelectorAll("li");
+    const listChildren = elements("li");
 
     expect(listChildren[0].textContent).toEqual("12:00");
     expect(listChildren[1].textContent).toEqual("13:00");
@@ -200,7 +199,7 @@ describe("AppointmentsDayView", () => {
   it("has a button element in each li", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
 
-    const buttons = document.querySelectorAll("li > button");
+    const buttons = elements("li > button");
 
     expect(buttons).toHaveLength(2);
     expect(buttons[0].type).toEqual("button");
@@ -209,7 +208,7 @@ describe("AppointmentsDayView", () => {
   it("renders another appointment when clicked", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
 
-    const button = document.querySelectorAll("li > button")[1];
+    const button = elements("li > button")[1];
     click(button);
 
     expect(document.body).toContainText("Jordan");
