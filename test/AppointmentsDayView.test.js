@@ -135,6 +135,18 @@ describe("Appointment", () => {
       render(<Appointment customer={blankCustomer} service={service} />);
       expect(appointmentTable().textContent).toContain("Cut");
     });
+
+    it("renders the notes", () => {
+      const notes = "notes 1";
+      render(<Appointment customer={blankCustomer} notes={notes} />);
+      expect(appointmentTable().textContent).toContain("notes 1");
+    });
+
+    it("renders another notes", () => {
+      const notes = "notes 2";
+      render(<Appointment customer={blankCustomer} notes={notes} />);
+      expect(appointmentTable().textContent).toContain("notes 2");
+    });
   });
 });
 

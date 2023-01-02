@@ -15,9 +15,13 @@ const formatPhoneNumber = (number) => {
   return `(${num.areaCode}) ${num.exchange}-${num.number}`;
 };
 
-export const Appointment = (props) => {
-  const { customer, startsAt, stylist, service } = props;
-  // console.log(props);
+export const Appointment = ({
+  customer,
+  startsAt,
+  stylist,
+  service,
+  notes,
+}) => {
   return (
     <div id="appointmentView">
       <h3>Today's appointment at {appointmentTimeOfDay(startsAt)}</h3>
@@ -40,6 +44,10 @@ export const Appointment = (props) => {
           <tr>
             <td>Service</td>
             <td>{service}</td>
+          </tr>
+          <tr>
+            <td>Notes</td>
+            <td>{notes}</td>
           </tr>
         </tbody>
       </table>
