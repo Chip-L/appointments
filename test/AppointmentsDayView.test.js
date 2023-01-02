@@ -3,8 +3,27 @@ import ReactDOM from "react-dom/client";
 import { act } from "react-dom/test-utils";
 import { Appointment, AppointmentsDayView } from "../src/AppointmentsDayView";
 
+// interface ICustomer {
+//   firstName: string;
+//   lastName: string;
+//   phoneNumber: string;
+// }
+
+// interface IAppointment  {
+//   customer: ICustomer,
+//   stylist: string,
+//   service: "Cut" | "Blow-dry" | "Cut & color" | "Beard trim" | "Cut & beard trim" | "Extensions",
+//   notes: string,
+//   startsAt: String,
+// }
+
 describe("Appointment", () => {
   let container;
+  const blankCustomer = {
+    firstName: "",
+    lastName: "",
+    phoneNumber: "",
+  };
 
   const render = (component) =>
     act(() => {
@@ -16,16 +35,82 @@ describe("Appointment", () => {
     document.body.replaceChildren(container);
   });
 
-  it("renders the customer first name", () => {
-    const customer = { firstName: "Ashley" };
-    render(<Appointment customer={customer} />);
-    expect(document.body.textContent).toContain(customer.firstName);
+  it("renders a div with the right id", () => {
+    render(<Appointment customer={blankCustomer} />);
+
+    expect(document.querySelector("div#appointmentView")).not.toBeNull();
   });
 
-  it("renders another customer first name", () => {
-    const customer = { firstName: "Jordan" };
-    render(<Appointment customer={customer} />);
-    expect(document.body.textContent).toContain(customer.firstName);
+  describe("heading", () => {
+    it("renders an h3 element", () => {
+      render(<Appointment customer={blankCustomer} />);
+      expect(document.querySelector("h3")).not.toBeNull();
+    });
+
+    it("renders the time in the heading", () => {
+      const startsAt = new Date().setHours(12, 0);
+      render(<Appointment customer={blankCustomer} startsAt={startsAt} />);
+      expect(document.body.textContent).toContain(
+        "Today's appointment at 12:00"
+      );
+    });
+
+    it("renders another time in the heading", () => {
+      const startsAt = new Date().setHours(13, 0);
+      render(<Appointment customer={blankCustomer} startsAt={startsAt} />);
+      expect(document.body.textContent).toContain(
+        "Today's appointment at 13:00"
+      );
+    });
+  });
+
+  describe("Appointment View table", () => {
+    const appointmentTable = () =>
+      document.querySelector("#appointmentView > table");
+
+    it("is rendered", () => {
+      render(<Appointment customer={blankCustomer} />);
+
+      expect(appointmentTable()).not.toBeNull();
+    });
+
+    // I'm not going to list each heading for the same reason that we don't do each of the buttons (Testing element positioning)
+
+    it("renders the customer first name", () => {
+      const customer = { firstName: "Ashley" };
+      render(<Appointment customer={customer} />);
+      expect(appointmentTable().textContent).toContain(customer.firstName);
+    });
+
+    it("renders another customer first name", () => {
+      const customer = { firstName: "Jordan" };
+      render(<Appointment customer={customer} />);
+      expect(appointmentTable().textContent).toContain(customer.firstName);
+    });
+
+    it("renders the customer last name", () => {
+      const customer = { lastName: "Smith" };
+      render(<Appointment customer={customer} />);
+      expect(appointmentTable().textContent).toContain(customer.lastName);
+    });
+
+    it("renders another customer last name", () => {
+      const customer = { lastName: "Jones" };
+      render(<Appointment customer={customer} />);
+      expect(appointmentTable().textContent).toContain(customer.lastName);
+    });
+
+    it("renders the customer's phone number", () => {
+      const customer = { phoneNumber: "1235551212" };
+      render(<Appointment customer={customer} />);
+      expect(appointmentTable().textContent).toContain("(123) 555-1212");
+    });
+
+    it("renders another customer's phone number", () => {
+      const customer = { phoneNumber: "1235558998" };
+      render(<Appointment customer={customer} />);
+      expect(appointmentTable().textContent).toContain("(123) 555-8998");
+    });
   });
 });
 

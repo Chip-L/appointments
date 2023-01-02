@@ -5,7 +5,39 @@ const appointmentTimeOfDay = (time) => {
   return `${h}:${m}`;
 };
 
-export const Appointment = ({ customer }) => <>{customer.firstName}</>;
+const formatPhoneNumber = (number) => {
+  if (!number) return "number";
+  const num = {
+    areaCode: number.slice(0, 3),
+    exchange: number.slice(3, 6),
+    number: number.slice(6),
+  };
+  return `(${num.areaCode}) ${num.exchange}-${num.number}`;
+};
+
+export const Appointment = (props) => {
+  const { customer, startsAt } = props;
+  // console.log(props);
+  return (
+    <div id="appointmentView">
+      <h3>Today's appointment at {appointmentTimeOfDay(startsAt)}</h3>
+      <table>
+        <tbody>
+          <tr>
+            <td>Customer</td>
+            <td>
+              {customer.firstName} {customer.lastName}
+            </td>
+          </tr>
+          <tr>
+            <td>Phone Number</td>
+            <td>{formatPhoneNumber(customer.phoneNumber)}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
 export const AppointmentsDayView = ({ appointments }) => {
   const [selectedAppointment, setSelectedAppointment] = useState(0);
