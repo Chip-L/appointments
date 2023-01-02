@@ -1,6 +1,11 @@
 import React from "react";
 import { Appointment, AppointmentsDayView } from "../src/AppointmentsDayView";
-import { click, initializeReactContainer, render } from "./reactTestExtensions";
+import {
+  click,
+  element,
+  initializeReactContainer,
+  render,
+} from "./reactTestExtensions";
 
 // interface ICustomer {
 //   firstName: string;
@@ -29,14 +34,13 @@ describe("Appointment", () => {
 
   it("renders a div with the right id", () => {
     render(<Appointment customer={blankCustomer} />);
-
-    expect(document.querySelector("div#appointmentView")).not.toBeNull();
+    expect(element("div#appointmentView")).not.toBeNull();
   });
 
   describe("heading", () => {
     it("renders an h3 element", () => {
       render(<Appointment customer={blankCustomer} />);
-      expect(document.querySelector("h3")).not.toBeNull();
+      expect(element("h3")).not.toBeNull();
     });
 
     it("renders the time in the heading", () => {
@@ -53,8 +57,7 @@ describe("Appointment", () => {
   });
 
   describe("Appointment View table", () => {
-    const appointmentTable = () =>
-      document.querySelector("#appointmentView > table");
+    const appointmentTable = () => element("#appointmentView > table");
 
     it("is rendered", () => {
       render(<Appointment customer={blankCustomer} />);
@@ -157,16 +160,12 @@ describe("AppointmentsDayView", () => {
 
   it("renders a div with the right id", () => {
     render(<AppointmentsDayView appointments={[]} />);
-
-    expect(document.querySelector("div#appointmentsDayView")).not.toBeNull();
+    expect(element("div#appointmentsDayView")).not.toBeNull();
   });
 
   it("renders an ol element to display appointments", () => {
     render(<AppointmentsDayView appointments={[]} />);
-
-    const listElement = document.querySelector("ol");
-
-    expect(listElement).not.toBeNull();
+    expect(element("ol")).not.toBeNull();
   });
 
   it("renders an li element for each appointment", () => {

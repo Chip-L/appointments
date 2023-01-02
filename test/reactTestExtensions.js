@@ -16,3 +16,5 @@ export const render = (component) =>
 export const click = (element) => {
   act(() => element.click());
 };
+
+export const element = (selector) => document.querySelector(selector);
