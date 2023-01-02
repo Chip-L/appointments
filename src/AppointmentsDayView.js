@@ -28,25 +28,25 @@ export const Appointment = ({
       <table>
         <tbody>
           <tr>
-            <td>Customer</td>
+            <th>Customer</th>
             <td>
               {customer.firstName} {customer.lastName}
             </td>
           </tr>
           <tr>
-            <td>Phone Number</td>
+            <th>Phone Number</th>
             <td>{formatPhoneNumber(customer.phoneNumber)}</td>
           </tr>
           <tr>
-            <td>Stylist</td>
+            <th>Stylist</th>
             <td>{stylist}</td>
           </tr>
           <tr>
-            <td>Service</td>
+            <th>Service</th>
             <td>{service}</td>
           </tr>
           <tr>
-            <td>Notes</td>
+            <th>Notes</th>
             <td>{notes}</td>
           </tr>
         </tbody>

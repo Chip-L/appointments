@@ -1,0 +1,59 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+body {
+  font-size: 2rem;
+  background-color: beige;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#appointmentsDayView {
+  max-width: 80rem;
+  display: flex;
+  flex-direction: row;
+}
+
+#appointmentsDayView > ol {
+  list-style: none;
+  padding: 1rem;
+  border-right: 0.1rem solid black;
+}
+
+#appointmentsDayView li {
+  padding: 0.5rem;
+}
+
+#appointmentsDayView li > button {
+  font-weight: bold;
+  color: white;
+  background-color: #5a7594;
+  padding: 0.5rem 1.5rem;
+}
+
+#appointmentView {
+  padding: 1rem;
+}
+
+#appointmentView > table {
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+#appointmentView tr {
+  vertical-align: baseline;
+  font-size: large;
+}
+
+#appointmentView th {
+  width: 15rem;
+  text-align: right;
+  padding-right: 1rem;
+  font-weight: bold;
+  font-style: italic;
+}
