@@ -23,8 +23,6 @@ describe("Appointment", () => {
     phoneNumber: "",
   };
 
-  render;
-
   beforeEach(() => {
     initializeReactContainer();
   });
@@ -44,17 +42,13 @@ describe("Appointment", () => {
     it("renders the time in the heading", () => {
       const startsAt = new Date().setHours(12, 0);
       render(<Appointment customer={blankCustomer} startsAt={startsAt} />);
-      expect(document.body.textContent).toContain(
-        "Today's appointment at 12:00"
-      );
+      expect(document.body).toContainText("Today's appointment at 12:00");
     });
 
     it("renders another time in the heading", () => {
       const startsAt = new Date().setHours(13, 0);
       render(<Appointment customer={blankCustomer} startsAt={startsAt} />);
-      expect(document.body.textContent).toContain(
-        "Today's appointment at 13:00"
-      );
+      expect(document.body).toContainText("Today's appointment at 13:00");
     });
   });
 
@@ -73,73 +67,73 @@ describe("Appointment", () => {
     it("renders the customer first name", () => {
       const customer = { firstName: "Ashley" };
       render(<Appointment customer={customer} />);
-      expect(appointmentTable().textContent).toContain(customer.firstName);
+      expect(appointmentTable()).toContainText(customer.firstName);
     });
 
     it("renders another customer first name", () => {
       const customer = { firstName: "Jordan" };
       render(<Appointment customer={customer} />);
-      expect(appointmentTable().textContent).toContain(customer.firstName);
+      expect(appointmentTable()).toContainText(customer.firstName);
     });
 
     it("renders the customer last name", () => {
       const customer = { lastName: "Smith" };
       render(<Appointment customer={customer} />);
-      expect(appointmentTable().textContent).toContain(customer.lastName);
+      expect(appointmentTable()).toContainText(customer.lastName);
     });
 
     it("renders another customer last name", () => {
       const customer = { lastName: "Jones" };
       render(<Appointment customer={customer} />);
-      expect(appointmentTable().textContent).toContain(customer.lastName);
+      expect(appointmentTable()).toContainText(customer.lastName);
     });
 
     it("renders the customer's phone number", () => {
       const customer = { phoneNumber: "1235551212" };
       render(<Appointment customer={customer} />);
-      expect(appointmentTable().textContent).toContain("(123) 555-1212");
+      expect(appointmentTable()).toContainText("(123) 555-1212");
     });
 
     it("renders another customer's phone number", () => {
       const customer = { phoneNumber: "1235558998" };
       render(<Appointment customer={customer} />);
-      expect(appointmentTable().textContent).toContain("(123) 555-8998");
+      expect(appointmentTable()).toContainText("(123) 555-8998");
     });
 
     it("renders the stylist's name", () => {
       const stylist = "Maggie";
       render(<Appointment customer={blankCustomer} stylist={stylist} />);
-      expect(appointmentTable().textContent).toContain("Maggie");
+      expect(appointmentTable()).toContainText("Maggie");
     });
 
     it("renders another stylist's name", () => {
       const stylist = "Jodie";
       render(<Appointment customer={blankCustomer} stylist={stylist} />);
-      expect(appointmentTable().textContent).toContain("Jodie");
+      expect(appointmentTable()).toContainText("Jodie");
     });
 
     it("renders the service", () => {
       const service = "Beard Trim";
       render(<Appointment customer={blankCustomer} service={service} />);
-      expect(appointmentTable().textContent).toContain("Beard Trim");
+      expect(appointmentTable()).toContainText("Beard Trim");
     });
 
     it("renders another service", () => {
       const service = "Cut";
       render(<Appointment customer={blankCustomer} service={service} />);
-      expect(appointmentTable().textContent).toContain("Cut");
+      expect(appointmentTable()).toContainText("Cut");
     });
 
     it("renders the notes", () => {
       const notes = "notes 1";
       render(<Appointment customer={blankCustomer} notes={notes} />);
-      expect(appointmentTable().textContent).toContain("notes 1");
+      expect(appointmentTable()).toContainText("notes 1");
     });
 
     it("renders another notes", () => {
       const notes = "notes 2";
       render(<Appointment customer={blankCustomer} notes={notes} />);
-      expect(appointmentTable().textContent).toContain("notes 2");
+      expect(appointmentTable()).toContainText("notes 2");
     });
   });
 });
@@ -194,18 +188,14 @@ describe("AppointmentsDayView", () => {
 
   it("initially shows a message saying there are no appointments today", () => {
     render(<AppointmentsDayView appointments={[]} />);
-
-    const text = document.body.textContent;
-
-    expect(text).toContain("There are no appointments scheduled for today.");
+    expect(document.body).toContainText(
+      "There are no appointments scheduled for today."
+    );
   });
 
   it("selects the first appointment by default", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
-
-    const text = document.body.textContent;
-
-    expect(text).toContain("Ashley");
+    expect(document.body).toContainText("Ashley");
   });
 
   it("has a button element in each li", () => {
@@ -223,6 +213,6 @@ describe("AppointmentsDayView", () => {
     const button = document.querySelectorAll("li > button")[1];
     click(button);
 
-    expect(document.body.textContent).toContain("Jordan");
+    expect(document.body).toContainText("Jordan");
   });
 });
