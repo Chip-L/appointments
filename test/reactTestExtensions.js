@@ -28,3 +28,5 @@ export const textOf = (elements) =>
 export const typesOf = (elements) => elements.map((element) => element.type);
 
 export const form = () => element("form");
+
+export const field = (fieldName) => form().elements[fieldName];
