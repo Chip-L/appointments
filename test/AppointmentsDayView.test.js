@@ -209,11 +209,11 @@ describe("AppointmentsDayView", () => {
   it("has toggled class when button is selected", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
     click(secondButton());
-    expect(secondButton().className).toContain("toggled");
+    expect(secondButton()).toHaveClass("toggled");
   });
 
   it("does not have toggled class when button is not selected", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
-    expect(secondButton().className).not.toContain("toggled");
+    expect(secondButton()).not.toHaveClass("toggled");
   });
 });
