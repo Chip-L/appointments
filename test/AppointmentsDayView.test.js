@@ -6,6 +6,8 @@ import {
   elements,
   initializeReactContainer,
   render,
+  textOf,
+  typesOf,
 } from "./reactTestExtensions";
 
 // interface ICustomer {
@@ -107,37 +109,37 @@ describe("Appointment", () => {
     it("renders the stylist's name", () => {
       const stylist = "Maggie";
       render(<Appointment customer={blankCustomer} stylist={stylist} />);
-      expect(appointmentTable()).toContainText("Maggie");
+      expect(appointmentTable()).toContainText(stylist);
     });
 
     it("renders another stylist's name", () => {
       const stylist = "Jodie";
       render(<Appointment customer={blankCustomer} stylist={stylist} />);
-      expect(appointmentTable()).toContainText("Jodie");
+      expect(appointmentTable()).toContainText(stylist);
     });
 
     it("renders the service", () => {
       const service = "Beard Trim";
       render(<Appointment customer={blankCustomer} service={service} />);
-      expect(appointmentTable()).toContainText("Beard Trim");
+      expect(appointmentTable()).toContainText(service);
     });
 
     it("renders another service", () => {
       const service = "Cut";
       render(<Appointment customer={blankCustomer} service={service} />);
-      expect(appointmentTable()).toContainText("Cut");
+      expect(appointmentTable()).toContainText(service);
     });
 
     it("renders the notes", () => {
       const notes = "notes 1";
       render(<Appointment customer={blankCustomer} notes={notes} />);
-      expect(appointmentTable()).toContainText("notes 1");
+      expect(appointmentTable()).toContainText(notes);
     });
 
     it("renders another notes", () => {
       const notes = "notes 2";
       render(<Appointment customer={blankCustomer} notes={notes} />);
-      expect(appointmentTable()).toContainText("notes 2");
+      expect(appointmentTable()).toContainText(notes);
     });
   });
 });
@@ -155,6 +157,8 @@ describe("AppointmentsDayView", () => {
     },
   ];
 
+  const secondButton = () => elements("li > button")[1];
+
   beforeEach(() => {
     initializeReactContainer();
   });
@@ -171,17 +175,12 @@ describe("AppointmentsDayView", () => {
 
   it("renders an li element for each appointment", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
-
     expect(elements("ol > li")).toHaveLength(2);
   });
 
   it("renders the time of each appointment", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
-
-    const listChildren = elements("li");
-
-    expect(listChildren[0].textContent).toEqual("12:00");
-    expect(listChildren[1].textContent).toEqual("13:00");
+    expect(textOf(elements("li"))).toEqual(["12:00", "13:00"]);
   });
 
   it("initially shows a message saying there are no appointments today", () => {
@@ -198,19 +197,23 @@ describe("AppointmentsDayView", () => {
 
   it("has a button element in each li", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
-
-    const buttons = elements("li > button");
-
-    expect(buttons).toHaveLength(2);
-    expect(buttons[0].type).toEqual("button");
+    expect(typesOf(elements("li > *"))).toEqual(["button", "button"]);
   });
 
   it("renders another appointment when clicked", () => {
     render(<AppointmentsDayView appointments={twoAppointments} />);
-
-    const button = elements("li > button")[1];
-    click(button);
-
+    click(secondButton());
     expect(document.body).toContainText("Jordan");
+  });
+
+  it("has toggled class when button is selected", () => {
+    render(<AppointmentsDayView appointments={twoAppointments} />);
+    click(secondButton());
+    expect(secondButton().className).toContain("toggled");
+  });
+
+  it("does not have toggled class when button is not selected", () => {
+    render(<AppointmentsDayView appointments={twoAppointments} />);
+    expect(secondButton().className).not.toContain("toggled");
   });
 });

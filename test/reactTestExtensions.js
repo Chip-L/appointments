@@ -19,4 +19,10 @@ export const click = (element) => {
 
 export const element = (selector) => document.querySelector(selector);
 
-export const elements = (selector) => document.querySelectorAll(selector);
+export const elements = (selector) =>
+  Array.from(document.querySelectorAll(selector));
+
+export const textOf = (elements) =>
+  elements.map((element) => element.textContent);
+
+export const typesOf = (elements) => elements.map((element) => element.type);
