@@ -2,6 +2,7 @@ import React from "react";
 import { CustomerForm } from "../src/CustomerForm";
 import {
   element,
+  form,
   initializeReactContainer,
   render,
 } from "./reactTestExtensions";
@@ -13,6 +14,6 @@ describe("CustomerForm", () => {
 
   it("renders a form", () => {
     render(<CustomerForm />);
-    expect(element("form")).not.toBeNull();
+    expect(form()).not.toBeNull();
   });
 });
