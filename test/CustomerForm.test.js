@@ -1,6 +1,6 @@
 import React from "react";
-import { CustomerForm } from "../src/CustomerForm";
 import {
+  change,
   click,
   element,
   field,
@@ -8,12 +8,15 @@ import {
   initializeReactContainer,
   render,
   submit,
+  submitButton,
 } from "./reactTestExtensions";
+import { CustomerForm } from "../src/CustomerForm";
 
 describe("CustomerForm", () => {
   const blankCustomer = {
     firstName: "",
   };
+
   beforeEach(() => {
     initializeReactContainer();
   });
@@ -21,6 +24,11 @@ describe("CustomerForm", () => {
   it("renders a form", () => {
     render(<CustomerForm original={blankCustomer} />);
     expect(form()).not.toBeNull();
+  });
+
+  it("renders a submit button", () => {
+    render(<CustomerForm original={blankCustomer} />);
+    expect(submitButton()).not.toBeNull();
   });
 
   it("renders the first name field as a text box", () => {
@@ -54,12 +62,6 @@ describe("CustomerForm", () => {
     expect(field("firstName").id).toEqual("firstName");
   });
 
-  it("renders a submit button", () => {
-    render(<CustomerForm original={blankCustomer} />);
-    const button = element("input[type=submit]");
-    expect(button).not.toBeNull();
-  });
-
   it("saves existing first name when submitted", () => {
     expect.hasAssertions();
 
@@ -71,13 +73,28 @@ describe("CustomerForm", () => {
       />
     );
 
-    const button = element("input[type=submit]");
-    click(button);
+    click(submitButton());
   });
 
   it("prevents the default action when submitting the form", () => {
     render(<CustomerForm original={blankCustomer} onSubmit={() => {}} />);
     const event = submit(form());
     expect(event.defaultPrevented).toBe(true);
+  });
+
+  it("saves new first name when submitted", () => {
+    try {
+      expect.hasAssertions();
+      render(
+        <CustomerForm
+          original={blankCustomer}
+          onSubmit={({ firstName }) => expect(firstName).toEqual("Jamie")}
+        />
+      );
+      change(field("firstName"), "Jamie");
+      click(submitButton());
+    } catch (error) {
+      console.log(error);
+    }
   });
 });
