@@ -6,6 +6,7 @@ import {
   field,
   form,
   initializeReactContainer,
+  labelFor,
   render,
   submit,
   submitButton,
@@ -60,14 +61,12 @@ describe("CustomerForm", () => {
   const itRendersALabel = (fieldName, text) => {
     it("renders a label", () => {
       render(<CustomerForm original={blankCustomer} />);
-      const label = element(`label[for=${fieldName}]`);
-      expect(label).not.toBeNull();
+      expect(labelFor(fieldName)).not.toBeNull();
     });
 
     it(`renders '${text}' as the first name label content`, () => {
       render(<CustomerForm original={blankCustomer} />);
-      const label = element(`label[for=${fieldName}]`);
-      expect(label).toContainText(text);
+      expect(labelFor(fieldName)).toContainText(text);
     });
   };
 
