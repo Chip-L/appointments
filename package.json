@@ -1,7 +1,7 @@
 {
   "name": "appointments",
   "version": "1.0.0",
-  "description": "",
+  "description": "Appointments system",
   "main": "index.js",
   "keywords": [],
   "author": "chip long",
