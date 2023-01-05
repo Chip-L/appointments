@@ -3,18 +3,15 @@ import React, { useState } from "react";
 export const CustomerForm = ({ original, onSubmit }) => {
   const [customer, setCustomer] = useState(original);
 
-  const handleChange = ({ target }) => {
-    console.log({ field: target.name, value: target.value });
-
+  const handleChange = ({ target }) =>
     setCustomer((customer) => ({
       ...customer,
       [target.name]: target.value,
     }));
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    onSubmit(original);
+    onSubmit(customer);
   };
 
   return (
