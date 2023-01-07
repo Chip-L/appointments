@@ -123,6 +123,7 @@ export const AppointmentForm = ({
         availableTimeSlots={availableTimeSlots}
         checkedTimeSlot={original.startsAt}
       />
+      <input type="submit" value="Add" />
     </form>
   );
 };

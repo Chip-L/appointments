@@ -39,6 +39,16 @@ try {
       expect(form()).not.toBeNull();
     });
 
+    it("renders a submit button", () => {
+      render(
+        <AppointmentForm
+          original={blankAppointment}
+          availableTimeSlots={availableTimeSlots}
+        />
+      );
+      expect(submitButton()).not.toBeNull();
+    });
+
     describe("service field", () => {
       const findOption = (selectBox, textContent) => {
         const options = Array.from(selectBox.childNodes);
