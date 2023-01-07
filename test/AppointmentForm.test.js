@@ -73,6 +73,46 @@ try {
         expect(option.selected).toBe(true);
       });
     });
+
+    describe("time slot table", () => {
+      it("renders a table for the time slots with an id", () => {
+        render(<AppointmentForm original={blankAppointment} />);
+        expect(element("table#time-slots")).not.toBeNull();
+      });
+
+      it("renders a time slot for every half hour between open and close times", () => {
+        render(
+          <AppointmentForm
+            original={blankAppointment}
+            salonOpensAt={9}
+            salonClosesAt={11}
+          />
+        );
+        const timesOfDayHeadings = elements("tbody >* th");
+        expect(timesOfDayHeadings[0]).toContainText("09:00");
+        expect(timesOfDayHeadings[1]).toContainText("09:30");
+        expect(timesOfDayHeadings[3]).toContainText("10:30");
+      });
+
+      it("renders an empty cell at the start of the header row", () => {
+        render(<AppointmentForm original={blankAppointment} />);
+        const headerRow = element("thead > tr");
+        expect(headerRow.firstChild).toContainText("");
+      });
+
+      it("renders a week of available dates", () => {
+        const specificDate = new Date(2023, 0, 1); // 1/1/23
+        render(
+          <AppointmentForm original={blankAppointment} today={specificDate} />
+        );
+        const dates = elements("thead >* th:not(:first-child)");
+
+        expect(dates).toHaveLength(7);
+        expect(dates[0]).toContainText("Sun 01");
+        expect(dates[1]).toContainText("Mon 02");
+        expect(dates[6]).toContainText("Sat 07");
+      });
+    });
   });
 } catch (error) {
   console.log(error);
