@@ -26,11 +26,25 @@ const toShortDate = (timestamp) => {
   return `${day} ${dayOfMonth}`;
 };
 
-const TimeSlotTable = ({ salonOpensAt, salonClosesAt, today }) => {
+const mergeDateAndTime = (date, timeSlot) => {
+  const time = new Date(timeSlot);
+  return new Date(date).setHours(
+    time.getHours(),
+    time.getMinutes(),
+    time.getSeconds(),
+    time.getMilliseconds()
+  );
+};
+
+const TimeSlotTable = ({
+  today,
+  salonOpensAt,
+  salonClosesAt,
+  availableTimeSlots,
+}) => {
   const dates = weeklyDateValues(today);
   const timeSlots = dailyTimeSlots(salonOpensAt, salonClosesAt);
 
-  console.log(today);
   return (
     <table id="time-slots">
       <thead>
@@ -45,6 +59,17 @@ const TimeSlotTable = ({ salonOpensAt, salonClosesAt, today }) => {
         {timeSlots.map((timeSlot) => (
           <tr key={timeSlot}>
             <th>{toTimeValue(timeSlot)}</th>
+            {dates.map((date) => (
+              <td key={date}>
+                {availableTimeSlots.some(
+                  (availableTimeSlot) =>
+                    availableTimeSlot.startsAt ===
+                    mergeDateAndTime(date, timeSlot)
+                ) ? (
+                  <input type="radio" />
+                ) : null}
+              </td>
+            ))}
           </tr>
         ))}
       </tbody>
@@ -55,9 +80,10 @@ const TimeSlotTable = ({ salonOpensAt, salonClosesAt, today }) => {
 export const AppointmentForm = ({
   selectableServices,
   original,
+  today,
   salonOpensAt,
   salonClosesAt,
-  today,
+  availableTimeSlots,
 }) => {
   return (
     <form>
@@ -68,18 +94,19 @@ export const AppointmentForm = ({
         ))}
       </select>
       <TimeSlotTable
+        today={today}
         salonOpensAt={salonOpensAt}
         salonClosesAt={salonClosesAt}
-        today={today}
+        availableTimeSlots={availableTimeSlots}
       />
     </form>
   );
 };
 
 AppointmentForm.defaultProps = {
+  today: new Date(),
   salonOpensAt: 9,
   salonClosesAt: 19,
-  today: new Date(),
   selectableServices: [
     "Cut",
     "Blow-dry",
