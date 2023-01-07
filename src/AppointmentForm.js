@@ -107,9 +107,15 @@ export const AppointmentForm = ({
   salonOpensAt,
   salonClosesAt,
   availableTimeSlots,
+  onSubmit,
 }) => {
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onSubmit(original.startsAt);
+  };
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <select name="service" value={original.service} readOnly>
         <option />
         {selectableServices.map((service) => (
