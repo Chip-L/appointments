@@ -19,7 +19,7 @@ describe("toBeInputFieldOfType matcher", () => {
     expect(result.pass).toBe(false);
   });
 
-  it("returns pass is false when element is the wrong type", () => {
+  it("returns pass is false when element is the wrong tag", () => {
     const domElement = elementFrom("<p />");
     const result = toBeInputFieldOfType(domElement, "text");
     expect(result.pass).toBe(false);
