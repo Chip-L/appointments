@@ -7,6 +7,7 @@ import {
   form,
   initializeReactContainer,
   render,
+  submitButton,
 } from "./reactTestExtensions";
 
 try {
@@ -97,6 +98,13 @@ try {
     });
 
     describe("time slot table", () => {
+      const cellsWithRadioButtons = () =>
+        elements("input[type=radio]").map((el) =>
+          elements("td").indexOf(el.parentNode)
+        );
+
+      const startsAtField = (index) => elements("input[name=startsAt]")[index];
+
       it("renders a table for the time slots with an id", () => {
         render(
           <AppointmentForm
@@ -150,11 +158,6 @@ try {
         expect(dates[6]).toContainText("Sat 07");
       });
 
-      const cellsWithRadioButtons = () =>
-        elements("input[type=radio]").map((el) =>
-          elements("td").indexOf(el.parentNode)
-        );
-
       it("renders radio buttons in the correct table cell positions", () => {
         const oneDayInMs = 24 * 60 * 60 * 1000;
         const today = new Date();
@@ -183,6 +186,33 @@ try {
           />
         );
         expect(elements("input[type=radio]")).toHaveLength(0);
+      });
+
+      it("sets radio button values to the startsAt value of the corresponding appointment", () => {
+        render(
+          <AppointmentForm
+            original={blankAppointment}
+            availableTimeSlots={availableTimeSlots}
+            today={today}
+          />
+        );
+        const allRadioValues = elements("input[type=radio]").map(({ value }) =>
+          parseInt(value)
+        );
+        const allSlotTimes = availableTimeSlots.map(({ startsAt }) => startsAt);
+        expect(allRadioValues).toEqual(allSlotTimes);
+      });
+
+      it("pre-selects the existing value", () => {
+        const appointment = { startsAt: availableTimeSlots[1].startsAt };
+        render(
+          <AppointmentForm
+            original={appointment}
+            availableTimeSlots={availableTimeSlots}
+            today={today}
+          />
+        );
+        expect(startsAtField(1).checked).toEqual(true);
       });
     });
   });

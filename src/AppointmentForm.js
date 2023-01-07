@@ -36,11 +36,35 @@ const mergeDateAndTime = (date, timeSlot) => {
   );
 };
 
+const RadioButtonIfAvailable = ({
+  availableTimeSlots,
+  date,
+  timeSlot,
+  checkedTimeSlot,
+}) => {
+  const startsAt = mergeDateAndTime(date, timeSlot);
+
+  if (availableTimeSlots.some((timeSlot) => timeSlot.startsAt === startsAt)) {
+    const isChecked = startsAt === checkedTimeSlot;
+    return (
+      <input
+        name="startsAt"
+        type="radio"
+        value={startsAt}
+        checked={isChecked}
+        readOnly
+      />
+    );
+  }
+  return null;
+};
+
 const TimeSlotTable = ({
   today,
   salonOpensAt,
   salonClosesAt,
   availableTimeSlots,
+  checkedTimeSlot,
 }) => {
   const dates = weeklyDateValues(today);
   const timeSlots = dailyTimeSlots(salonOpensAt, salonClosesAt);
@@ -61,13 +85,12 @@ const TimeSlotTable = ({
             <th>{toTimeValue(timeSlot)}</th>
             {dates.map((date) => (
               <td key={date}>
-                {availableTimeSlots.some(
-                  (availableTimeSlot) =>
-                    availableTimeSlot.startsAt ===
-                    mergeDateAndTime(date, timeSlot)
-                ) ? (
-                  <input type="radio" />
-                ) : null}
+                <RadioButtonIfAvailable
+                  availableTimeSlots={availableTimeSlots}
+                  date={date}
+                  timeSlot={timeSlot}
+                  checkedTimeSlot={checkedTimeSlot}
+                />
               </td>
             ))}
           </tr>
@@ -98,6 +121,7 @@ export const AppointmentForm = ({
         salonOpensAt={salonOpensAt}
         salonClosesAt={salonClosesAt}
         availableTimeSlots={availableTimeSlots}
+        checkedTimeSlot={original.startsAt}
       />
     </form>
   );
