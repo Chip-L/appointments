@@ -8,22 +8,22 @@ describe("toBeElementWithTag matcher", () => {
     return parent.firstChild;
   };
 
-  it("returns pass is true when select element is of the right type", () => {
-    const domElement = elementFrom("<select >");
+  it("returns pass is true when select element is of the right type regardless of case", () => {
+    const domElement = elementFrom("<select />");
     const result = toBeElementWithTag(domElement, "select");
     expect(result.pass).toBe(true);
   });
 
-  // it("returns pass is false when element is null", () => {
-  //   const result = toBeElementWithTag(null, "select");
-  //   expect(result.pass).toBe(false);
-  // });
+  it("returns pass is false when element is null", () => {
+    const result = toBeElementWithTag(null, "select");
+    expect(result.pass).toBe(false);
+  });
 
-  // it("returns pass is false when element is the wrong type", () => {
-  //   const domElement = elementFrom("<p />");
-  //   const result = toBeElementWithTag(domElement, "select");
-  //   expect(result.pass).toBe(false);
-  // });
+  it("returns pass is false when element is the wrong type", () => {
+    const domElement = elementFrom("<p />");
+    const result = toBeElementWithTag(domElement, "select");
+    expect(result.pass).toBe(false);
+  });
 
   // it("returns pass is false when element is the wrong type", () => {
   //   const domElement = elementFrom("<select type=date />");
