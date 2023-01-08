@@ -8,6 +8,7 @@ import {
   field,
   form,
   initializeReactContainer,
+  labelFor,
   render,
   submit,
   submitButton,
@@ -94,6 +95,11 @@ describe("AppointmentsForm", () => {
       const option = findOption(field("service"), "Blow-dry");
 
       expect(option.selected).toBe(true);
+    });
+
+    it("renders a label for the service request", () => {
+      render(<AppointmentForm {...testProps} />);
+      expect(labelFor("service")).not.toBeNull();
     });
   });
 
