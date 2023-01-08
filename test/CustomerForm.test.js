@@ -95,19 +95,15 @@ describe("CustomerForm", () => {
 
   const itSubmitsNewValue = (fieldName, value) =>
     it("saves new value when submitted", () => {
-      try {
-        expect.hasAssertions();
-        render(
-          <CustomerForm
-            original={blankCustomer}
-            onSubmit={(props) => expect(props[fieldName]).toEqual(value)}
-          />
-        );
-        change(field(fieldName), value);
-        click(submitButton());
-      } catch (error) {
-        console.log(error);
-      }
+      const submitSpy = spy();
+      render(<CustomerForm original={blankCustomer} onSubmit={submitSpy.fn} />);
+      change(field(fieldName), value);
+      click(submitButton());
+
+      expect(submitSpy).toBeCalledWith({
+        ...blankCustomer,
+        [fieldName]: value,
+      });
     });
 
   describe("first name field", () => {

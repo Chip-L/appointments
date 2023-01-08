@@ -19,12 +19,13 @@ expect.extend({
     if (notMatch) {
       return {
         pass: false,
-        message: `Spy called with the wrong arguments: ${received.receivedArguments()}.`,
+        message: () =>
+          `Spy called with the wrong arguments: ${received.receivedArguments()}.`,
       };
     }
     return {
       pass: true,
-      message: "Spy was called",
+      message: () => "Spy was called",
     };
   },
   toBeElementWithTag,
