@@ -1,6 +1,15 @@
-export const toBeElementWithTag = (received, expected) => {
-  expected = expected.toUpperCase();
-  const pass = received?.tagName === expected;
+import { matcherHint, printExpected } from "jest-matcher-utils";
 
-  return { pass };
+export const toBeElementWithTag = (element, expectedTagName) => {
+  const pass = element?.tagName === expectedTagName.toUpperCase();
+
+  const message = () =>
+    matcherHint(
+      "toBeElementWithTag",
+      "element",
+      printExpected(expectedTagName),
+      { isNot: pass }
+    );
+
+  return { pass, message };
 };

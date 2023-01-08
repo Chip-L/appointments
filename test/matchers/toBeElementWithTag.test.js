@@ -19,25 +19,19 @@ describe("toBeElementWithTag matcher", () => {
     expect(result.pass).toBe(false);
   });
 
-  it("returns pass is false when element is the wrong type", () => {
+  it("returns pass is false when element is the wrong tag", () => {
     const domElement = elementFrom("<p />");
     const result = toBeElementWithTag(domElement, "select");
     expect(result.pass).toBe(false);
   });
 
-  // it("returns pass is false when element is the wrong type", () => {
-  //   const domElement = elementFrom("<select type=date />");
-  //   const result = toBeElementWithTag(domElement, "select");
-  //   expect(result.pass).toBe(false);
-  // });
-
-  // it("returns a message that contains the source line if no match", () => {
-  //   const domElement = elementFrom("<select type=date />");
-  //   const result = toBeElementWithTag(domElement, "select");
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `expect(element).toBeElementWithTag("select")`
-  //   );
-  // });
+  it("returns a message that contains the source line if no match", () => {
+    const domElement = elementFrom("<p />");
+    const result = toBeElementWithTag(domElement, "select");
+    expect(stripTerminalColor(result.message())).toMatch(
+      `expect(element).toBeElementWithTag("select")`
+    );
+  });
 
   // it("returns a message that contains the source line if negated match", () => {
   //   const domElement = elementFrom("<select type=select />");
