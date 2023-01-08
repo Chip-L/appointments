@@ -12,22 +12,10 @@ import {
   submitButton,
 } from "./reactTestExtensions";
 import { CustomerForm } from "../src/CustomerForm";
-
-const fetchResponseOk = (body) =>
-  Promise.resolve({
-    ok: true,
-    json: () => Promise.resolve(body),
-  });
-
-const fetchResponseError = () => Promise.resolve({ ok: false });
+import { bodyOfLastFetchRequest } from "./spyHelpers";
+import { fetchResponseError, fetchResponseOk } from "./builders/fetch";
 
 describe("CustomerForm", () => {
-  const bodyOfLastFetchRequest = () => {
-    const allCalls = global.fetch.mock.calls;
-    const lastCall = allCalls[allCalls.length - 1];
-    return JSON.parse(lastCall[1].body);
-  };
-
   const blankCustomer = {
     firstName: "",
     lastName: "",
@@ -202,6 +190,19 @@ describe("CustomerForm", () => {
 
   it("initially has no text in the alert space", async () => {
     render(<CustomerForm original={blankCustomer} />);
+    expect(element("[role=alert]")).not.toContainText("error occurred");
+  });
+
+  it("clears the alert after a second successful submit", async () => {
+    global.fetch
+      .mockResolvedValueOnce(fetchResponseError)
+      .mockResolvedValue(fetchResponseOk());
+
+    const saveSpy = jest.fn();
+    render(<CustomerForm original={blankCustomer} onSave={saveSpy} />);
+    await clickAndWait(submitButton());
+    await clickAndWait(submitButton());
+
     expect(element("[role=alert]")).not.toContainText("error occurred");
   });
 });
