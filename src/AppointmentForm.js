@@ -139,6 +139,9 @@ export const AppointmentForm = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    global.fetch("/appointments", {
+      method: "POST",
+    });
     onSubmit(appointment);
   };
 

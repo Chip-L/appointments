@@ -4,6 +4,7 @@ import { today, todayAt, tomorrowAt } from "./builders/time";
 import {
   change,
   click,
+  clickAndWait,
   element,
   elements,
   field,
@@ -14,6 +15,7 @@ import {
   submit,
   submitButton,
 } from "./reactTestExtensions";
+import { bodyOfLastFetchRequest } from "./spyHelpers";
 
 describe("AppointmentForm", () => {
   const blankAppointment = {
@@ -45,6 +47,7 @@ describe("AppointmentForm", () => {
 
   beforeEach(() => {
     initializeReactContainer();
+    jest.spyOn(global, "fetch");
   });
 
   const startsAtField = (index) => elements("input[name=startsAt]")[index];
@@ -129,6 +132,8 @@ describe("AppointmentForm", () => {
         />
       );
       click(submitButton());
+      // clickAndWait(submitButton());
+      // expect(bodyOfLastFetchRequest()).toMatchObject(existing)
     });
   };
 
@@ -350,5 +355,16 @@ describe("AppointmentForm", () => {
 
       expect(cellsWithRadioButtons()).toEqual([7]);
     });
+  });
+
+  it("sends request to POST /appointments when submitting the form", async () => {
+    render(<AppointmentForm {...testProps} onSubmit={() => {}} />);
+    await clickAndWait(submitButton());
+    expect(global.fetch).toBeCalledWith(
+      "/appointments",
+      expect.objectContaining({
+        method: "POST",
+      })
+    );
   });
 });
