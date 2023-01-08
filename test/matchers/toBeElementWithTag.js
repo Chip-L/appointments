@@ -10,7 +10,10 @@ export const toBeElementWithTag = (element, expectedTagName) => {
     { isNot: pass }
   );
 
-  const actualHint = `Actual: element was not found`;
+  const hintText = !element
+    ? "element was not found"
+    : `<${element.tagName.toLowerCase()}>`;
+  const actualHint = `Actual: ${hintText}`;
 
   const message = () => [sourceHint, actualHint].join("\n\n");
 

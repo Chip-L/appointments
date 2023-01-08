@@ -48,9 +48,9 @@ describe("toBeElementWithTag matcher", () => {
     );
   });
 
-  // it("returns a message that the element passed has the wrong tag", () => {
-  //   const domElement = elementFrom("<p />");
-  //   const result = toBeElementWithTag(domElement, "select");
-  //   expect(stripTerminalColor(result.message())).toContain(`Actual: <p>`);
-  // });
+  it("returns a message that the element passed has the wrong tag", () => {
+    const domElement = elementFrom("<p />");
+    const result = toBeElementWithTag(domElement, "select");
+    expect(stripTerminalColor(result.message())).toContain(`Actual: <p>`);
+  });
 });
