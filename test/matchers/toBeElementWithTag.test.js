@@ -33,13 +33,13 @@ describe("toBeElementWithTag matcher", () => {
     );
   });
 
-  // it("returns a message that contains the source line if negated match", () => {
-  //   const domElement = elementFrom("<select type=select />");
-  //   const result = toBeElementWithTag(domElement, "select");
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `expect(element).not.toBeElementWithTag("select")`
-  //   );
-  // });
+  it("returns a message that contains the source line if negated match", () => {
+    const domElement = elementFrom("<select type=select />");
+    const result = toBeElementWithTag(domElement, "select");
+    expect(stripTerminalColor(result.message())).toContain(
+      `expect(element).not.toBeElementWithTag("select")`
+    );
+  });
 
   // it("returns a message that the element passed is null", () => {
   //   const result = toBeElementWithTag(null, "select");
