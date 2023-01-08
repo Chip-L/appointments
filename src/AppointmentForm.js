@@ -126,8 +126,8 @@ export const AppointmentForm = ({
     []
   );
 
-  const handleServiceChange = ({ target: { value } }) => {
-    setAppointment((appointment) => ({ ...appointment, service: value }));
+  const handleSelectBoxChange = ({ target: { name, value } }) => {
+    setAppointment((appointment) => ({ ...appointment, [name]: value }));
   };
 
   const handleSubmit = (event) => {
@@ -142,7 +142,7 @@ export const AppointmentForm = ({
         name="service"
         id="service"
         value={appointment.service}
-        onChange={handleServiceChange}
+        onChange={handleSelectBoxChange}
       >
         <option />
         {selectableServices.map((s) => (
@@ -151,7 +151,12 @@ export const AppointmentForm = ({
       </select>
 
       <label htmlFor="stylist">Stylist</label>
-      <select id="stylist" name="stylist" value={appointment.stylist} readOnly>
+      <select
+        id="stylist"
+        name="stylist"
+        value={appointment.stylist}
+        onChange={handleSelectBoxChange}
+      >
         <option />
         {stylistsForService.map((s) => (
           <option key={s}>{s}</option>

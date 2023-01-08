@@ -108,12 +108,44 @@ describe("AppointmentsForm", () => {
     });
   };
 
+  const itSubmitsExistingValue = (fieldName, existing) => {
+    it("saves existing value when submitted", () => {
+      expect.hasAssertions();
+      const appointment = { [fieldName]: existing };
+      render(
+        <AppointmentForm
+          {...testProps}
+          original={appointment}
+          onSubmit={(props) => expect(props[fieldName]).toEqual(existing)}
+        />
+      );
+      click(submitButton());
+    });
+  };
+
+  const itSubmitsNewValue = (fieldName, value) => {
+    it("saves a new value when submitted", () => {
+      expect.hasAssertions();
+      render(
+        <AppointmentForm
+          {...testProps}
+          original={blankAppointment}
+          onSubmit={(props) => expect(props[fieldName]).toEqual(value)}
+        />
+      );
+      change(field(fieldName), value);
+      click(submitButton());
+    });
+  };
+
   describe("service field", () => {
     itRendersAsASelectBox("service");
     itHasABlankValueAsTheFirstValue("service");
     itPreSelectsTheExistingValue("service", "Blow-dry");
     itRendersALabel("service", "Salon service");
     itAssignsAnIdThatMatchesTheLabelId("service");
+    itSubmitsExistingValue("service", "Blow-dry");
+    itSubmitsNewValue("service", "Cut");
 
     it("lists all salon services", () => {
       const services = ["Cut", "Blow-dry"];
@@ -121,37 +153,6 @@ describe("AppointmentsForm", () => {
       expect(labelsOfAllOptions(field("service"))).toEqual(
         expect.arrayContaining(services)
       );
-    });
-
-    it("saves existing service when submitted", () => {
-      expect.hasAssertions();
-      const appointment = { service: "Blow-dry" };
-      render(
-        <AppointmentForm
-          {...testProps}
-          selectableServices={services}
-          original={appointment}
-          onSubmit={(props) =>
-            expect(props["service"]).toEqual(appointment.service)
-          }
-        />
-      );
-      click(submitButton());
-    });
-
-    it("saves a new service when submitted", () => {
-      expect.hasAssertions();
-      const appointment = { service: "Blow-dry" };
-      render(
-        <AppointmentForm
-          {...testProps}
-          selectableServices={services}
-          original={appointment}
-          onSubmit={(props) => expect(props["service"]).toEqual("Cut")}
-        />
-      );
-      change(field("service"), "Cut");
-      click(submitButton());
     });
   });
 
@@ -161,6 +162,8 @@ describe("AppointmentsForm", () => {
     itPreSelectsTheExistingValue("stylist", "Ashley");
     itRendersALabel("stylist", "Stylist");
     itAssignsAnIdThatMatchesTheLabelId("stylist");
+    itSubmitsExistingValue("stylist", "Jo");
+    itSubmitsNewValue("stylist", "Jo");
 
     it("lists only stylists that can perform the selected service", () => {
       const serviceStylists = { Cut: ["A", "B"] };
