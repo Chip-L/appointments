@@ -2,7 +2,6 @@ import React from "react";
 import {
   change,
   click,
-  element,
   field,
   form,
   initializeReactContainer,
@@ -12,6 +11,15 @@ import {
   submitButton,
 } from "./reactTestExtensions";
 import { CustomerForm } from "../src/CustomerForm";
+
+const spy = () => {
+  let receivedArguments;
+  return {
+    fn: (...args) => (receivedArguments = args),
+    receivedArguments: () => receivedArguments,
+    receivedArgument: (n) => receivedArguments[n],
+  };
+};
 
 describe("CustomerForm", () => {
   const blankCustomer = {
@@ -61,7 +69,7 @@ describe("CustomerForm", () => {
       expect(labelFor(fieldName)).not.toBeNull();
     });
 
-    it(`renders '${text}' as the first name label content`, () => {
+    it(`renders '${text}' as the label's content`, () => {
       render(<CustomerForm original={blankCustomer} />);
       expect(labelFor(fieldName)).toContainText(text);
     });
@@ -76,35 +84,26 @@ describe("CustomerForm", () => {
 
   const itSubmitsExistingValue = (fieldName, value) => {
     it("saves existing value when submitted", () => {
-      expect.hasAssertions();
-
+      const submitSpy = spy();
       const customer = { [fieldName]: value };
-      render(
-        <CustomerForm
-          original={customer}
-          onSubmit={(props) => expect(props[fieldName]).toEqual(value)}
-        />
-      );
-
+      render(<CustomerForm original={customer} onSubmit={submitSpy.fn} />);
       click(submitButton());
+
+      expect(submitSpy).toBeCalledWith(customer);
     });
   };
 
   const itSubmitsNewValue = (fieldName, value) =>
     it("saves new value when submitted", () => {
-      try {
-        expect.hasAssertions();
-        render(
-          <CustomerForm
-            original={blankCustomer}
-            onSubmit={(props) => expect(props[fieldName]).toEqual(value)}
-          />
-        );
-        change(field(fieldName), value);
-        click(submitButton());
-      } catch (error) {
-        console.log(error);
-      }
+      const submitSpy = spy();
+      render(<CustomerForm original={blankCustomer} onSubmit={submitSpy.fn} />);
+      change(field(fieldName), value);
+      click(submitButton());
+
+      expect(submitSpy).toBeCalledWith({
+        ...blankCustomer,
+        [fieldName]: value,
+      });
     });
 
   describe("first name field", () => {
