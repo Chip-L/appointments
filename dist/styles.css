@@ -73,6 +73,7 @@ label::after {
   content: ":";
 }
 
+select,
 input[type="text"] {
   grid-column: 3;
   margin: 1rem;
@@ -101,4 +102,27 @@ input[type="submit"]:active {
   /* box-shadow: 0 5px #666; */
   box-shadow: 0.25rem 0.25rem 0.25rem rgb(0 0 0 / 20%);
   transform: translateY(0.4rem);
+}
+
+#time-slots {
+  grid-column: 1 / span 4;
+  background-color: aliceblue;
+}
+
+#time-slots,
+#time-slots th,
+#time-slots td {
+  border-collapse: collapse;
+  border: 1px solid #5a7594;
+}
+
+#time-slots th {
+  font-weight: bold;
+  color: white;
+  border-color: white;
+  background-color: #5a7594;
+}
+
+#time-slots td {
+  text-align: center;
 }
