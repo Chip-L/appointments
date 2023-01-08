@@ -2,6 +2,7 @@ import React from "react";
 import { AppointmentForm } from "../src/AppointmentForm";
 import { today, todayAt, tomorrowAt } from "./builders/time";
 import {
+  change,
   click,
   element,
   elements,
@@ -107,9 +108,40 @@ describe("AppointmentsForm", () => {
       expect(labelFor("service")).toContainText("Salon service");
     });
 
-    it("assigns an id that matches the label id", () => {
+    it("assigns the id 'service' to match the label id", () => {
       render(<AppointmentForm {...testProps} />);
       expect(field("service").id).toEqual("service");
+    });
+
+    it("saves existing service when submitted", () => {
+      expect.hasAssertions();
+      const appointment = { service: "Blow-dry" };
+      render(
+        <AppointmentForm
+          {...testProps}
+          selectableServices={services}
+          original={appointment}
+          onSubmit={(props) =>
+            expect(props["service"]).toEqual(appointment.service)
+          }
+        />
+      );
+      click(submitButton());
+    });
+
+    it("saves a new service when submitted", () => {
+      expect.hasAssertions();
+      const appointment = { service: "Blow-dry" };
+      render(
+        <AppointmentForm
+          {...testProps}
+          selectableServices={services}
+          original={appointment}
+          onSubmit={(props) => expect(props["service"]).toEqual("Cut")}
+        />
+      );
+      change(field("service"), "Cut");
+      click(submitButton());
     });
   });
 
