@@ -1,5 +1,6 @@
 import React from "react";
 import { Appointment, AppointmentsDayView } from "../src/AppointmentsDayView";
+import { todayAt } from "./builders/time";
 import {
   click,
   element,
@@ -47,13 +48,13 @@ describe("Appointment", () => {
     });
 
     it("renders the time in the heading", () => {
-      const startsAt = new Date().setHours(12, 0);
+      const startsAt = todayAt(12, 0);
       render(<Appointment customer={blankCustomer} startsAt={startsAt} />);
       expect(document.body).toContainText("Today's appointment at 12:00");
     });
 
     it("renders another time in the heading", () => {
-      const startsAt = new Date().setHours(13, 0);
+      const startsAt = todayAt(13);
       render(<Appointment customer={blankCustomer} startsAt={startsAt} />);
       expect(document.body).toContainText("Today's appointment at 13:00");
     });
@@ -145,14 +146,13 @@ describe("Appointment", () => {
 });
 
 describe("AppointmentsDayView", () => {
-  const today = new Date();
   const twoAppointments = [
     {
-      startsAt: today.setHours(12, 0),
+      startsAt: todayAt(12),
       customer: { firstName: "Ashley" },
     },
     {
-      startsAt: today.setHours(13, 0),
+      startsAt: todayAt(13),
       customer: { firstName: "Jordan" },
     },
   ];
