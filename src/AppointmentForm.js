@@ -113,9 +113,16 @@ export const AppointmentForm = ({
   onSubmit,
 }) => {
   const [appointment, setAppointment] = useState(original);
+
   const stylistsForService = appointment.service
     ? serviceStylists[appointment.service]
     : selectableStylists;
+
+  const timeSlotsForStylist = appointment.stylist
+    ? availableTimeSlots.filter((slot) =>
+        slot.stylists.includes(appointment.stylist)
+      )
+    : availableTimeSlots;
 
   const handleStartsAtChange = useCallback(
     ({ target: { value } }) =>
@@ -167,7 +174,7 @@ export const AppointmentForm = ({
         salonOpensAt={salonOpensAt}
         salonClosesAt={salonClosesAt}
         today={today}
-        availableTimeSlots={availableTimeSlots}
+        availableTimeSlots={timeSlotsForStylist}
         checkedTimeSlot={appointment.startsAt}
         handleChange={handleStartsAtChange}
       />
