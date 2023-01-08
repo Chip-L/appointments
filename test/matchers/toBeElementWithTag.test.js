@@ -41,24 +41,16 @@ describe("toBeElementWithTag matcher", () => {
     );
   });
 
-  // it("returns a message that the element passed is null", () => {
-  //   const result = toBeElementWithTag(null, "select");
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `Actual: element was not found`
-  //   );
-  // });
+  it("returns a message that the element passed is null", () => {
+    const result = toBeElementWithTag(null, "select");
+    expect(stripTerminalColor(result.message())).toContain(
+      `Actual: element was not found`
+    );
+  });
 
   // it("returns a message that the element passed has the wrong tag", () => {
   //   const domElement = elementFrom("<p />");
   //   const result = toBeElementWithTag(domElement, "select");
   //   expect(stripTerminalColor(result.message())).toContain(`Actual: <p>`);
-  // });
-
-  // it("returns a message that the element passed has the wrong type", () => {
-  //   const domElement = elementFrom("<select type=date />");
-  //   const result = toBeElementWithTag(domElement, "select");
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `Actual: <select type=date>`
-  //   );
   // });
 });
