@@ -14,10 +14,15 @@ import { CustomerForm } from "../src/CustomerForm";
 
 const spy = () => {
   let receivedArguments;
+  let returnValue;
   return {
-    fn: (...args) => (receivedArguments = args),
+    fn: (...args) => {
+      receivedArguments = args;
+      return returnValue;
+    },
     receivedArguments: () => receivedArguments,
     receivedArgument: (n) => receivedArguments[n],
+    stubReturnValue: (value) => (returnValue = value),
   };
 };
 
