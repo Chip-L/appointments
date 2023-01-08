@@ -145,6 +145,14 @@ describe("AppointmentsForm", () => {
     });
   });
 
+  describe("stylists field", () => {
+    it("renders as a select box", () => {
+      render(<AppointmentForm {...testProps} />);
+      expect(field("stylist")).not.toBeNull();
+      expect(field("stylist")).toBeElementWithTag("select");
+    });
+  });
+
   describe("time slot table", () => {
     it("renders a table for the time slots with an id", () => {
       render(<AppointmentForm {...testProps} />);

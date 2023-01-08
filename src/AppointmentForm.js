@@ -145,6 +145,8 @@ export const AppointmentForm = ({
         ))}
       </select>
 
+      <select name="stylist"></select>
+
       <TimeSlotTable
         salonOpensAt={salonOpensAt}
         salonClosesAt={salonClosesAt}
