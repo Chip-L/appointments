@@ -141,6 +141,8 @@ export const AppointmentForm = ({
     event.preventDefault();
     global.fetch("/appointments", {
       method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
     });
     onSubmit(appointment);
   };

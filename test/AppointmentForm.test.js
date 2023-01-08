@@ -367,4 +367,18 @@ describe("AppointmentForm", () => {
       })
     );
   });
+
+  it("calls fetch with the correct configuration", async () => {
+    render(<AppointmentForm {...testProps} onSubmit={() => {}} />);
+    await clickAndWait(submitButton());
+    expect(global.fetch).toBeCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    );
+  });
 });
