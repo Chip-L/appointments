@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 export const CustomerForm = ({ original, onSave }) => {
   const [customer, setCustomer] = useState(original);
+  const [error, setError] = useState(false);
 
   const handleChange = ({ target }) =>
     setCustomer((customer) => ({
@@ -20,13 +21,17 @@ export const CustomerForm = ({ original, onSave }) => {
     if (result.ok) {
       const customerWithId = await result.json();
       onSave(customerWithId);
+    } else {
+      setError(true);
     }
   };
-  const Error = () => <p role="alert">An error occurred during save.</p>;
+  const Error = ({ hasError }) => (
+    <p role="alert">{hasError ? "An error occurred during save." : ""}</p>
+  );
 
   return (
     <form onSubmit={handleSubmit}>
-      <Error />
+      <Error hasError={error} />
       <label htmlFor="firstName">First Name</label>
       <input
         type="text"

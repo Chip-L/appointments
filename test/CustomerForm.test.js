@@ -215,4 +215,9 @@ describe("CustomerForm", () => {
 
     expect(element("[role=alert]")).toContainText("error occurred");
   });
+
+  it("initially has no text in the alert space", async () => {
+    render(<CustomerForm original={blankCustomer} />);
+    expect(element("[role=alert]")).not.toContainText("error occurred");
+  });
 });
