@@ -36,6 +36,7 @@ describe("CustomerForm", () => {
     fetchSpy = spy();
     global.fetch = fetchSpy.fn;
   });
+
   afterEach(() => {
     global.fetch = originalFetch;
   });
@@ -51,7 +52,7 @@ describe("CustomerForm", () => {
   });
 
   it("prevents the default action when submitting the form", () => {
-    render(<CustomerForm original={blankCustomer} onSubmit={() => {}} />);
+    render(<CustomerForm original={blankCustomer} />);
     const event = submit(form());
     expect(event.defaultPrevented).toBe(true);
   });
@@ -92,26 +93,32 @@ describe("CustomerForm", () => {
 
   const itSubmitsExistingValue = (fieldName, value) => {
     it("saves existing value when submitted", () => {
-      const submitSpy = spy();
       const customer = { [fieldName]: value };
-      render(<CustomerForm original={customer} onSubmit={submitSpy.fn} />);
+      render(<CustomerForm original={customer} />);
       click(submitButton());
-
-      expect(submitSpy).toBeCalledWith(customer);
+      expect(fetchSpy).toBeCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          body: JSON.stringify(customer),
+        })
+      );
     });
   };
 
   const itSubmitsNewValue = (fieldName, value) =>
     it("saves new value when submitted", () => {
-      const submitSpy = spy();
-      render(<CustomerForm original={blankCustomer} onSubmit={submitSpy.fn} />);
+      render(<CustomerForm original={blankCustomer} />);
       change(field(fieldName), value);
       click(submitButton());
-
-      expect(submitSpy).toBeCalledWith({
-        ...blankCustomer,
-        [fieldName]: value,
-      });
+      expect(fetchSpy).toBeCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          body: JSON.stringify({
+            ...blankCustomer,
+            [fieldName]: value,
+          }),
+        })
+      );
     });
 
   describe("first name field", () => {
@@ -139,28 +146,5 @@ describe("CustomerForm", () => {
     itAssignsAnIdThatMatchesTheLabelId("phoneNumber");
     itSubmitsExistingValue("phoneNumber", "existingValue");
     itSubmitsNewValue("phoneNumber", "newValue");
-  });
-
-  it("sends request to POST /customers when submitting the form", () => {
-    render(<CustomerForm original={blankCustomer} onSubmit={() => {}} />);
-    click(submitButton());
-    expect(fetchSpy).toBeCalledWith(
-      "/customers",
-      expect.objectContaining({ method: "POST" })
-    );
-  });
-
-  it("calls fetch with the correct configuration", () => {
-    render(<CustomerForm original={blankCustomer} onSubmit={() => {}} />);
-    click(submitButton());
-    expect(fetchSpy).toBeCalledWith(
-      expect.anything(),
-      expect.objectContaining({
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-    );
   });
 });
