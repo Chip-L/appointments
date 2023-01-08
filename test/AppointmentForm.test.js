@@ -62,18 +62,25 @@ describe("AppointmentsForm", () => {
     expect(event.defaultPrevented).toBe(true);
   });
 
-  describe("service field", () => {
+  const itRendersAsASelectBox = (fieldName) => {
     it("renders as a select box", () => {
       render(<AppointmentForm {...testProps} />);
-      expect(field("service")).not.toBeNull();
-      expect(field("service")).toBeElementWithTag("select");
+      expect(field(fieldName)).not.toBeNull();
+      expect(field(fieldName)).toBeElementWithTag("select");
     });
+  };
 
+  const itHasABlankValueAsTheFirstValue = (fieldName) => {
     it("has a blank value as the first value", () => {
       render(<AppointmentForm {...testProps} original={blankAppointment} />);
-      const firstOption = field("service").childNodes[0];
+      const firstOption = field(fieldName).childNodes[0];
       expect(firstOption.value).toEqual("");
     });
+  };
+
+  describe("service field", () => {
+    itRendersAsASelectBox("service");
+    itHasABlankValueAsTheFirstValue("service");
 
     it("lists all salon services", () => {
       const services = ["Cut", "Blow-dry"];
@@ -145,12 +152,9 @@ describe("AppointmentsForm", () => {
     });
   });
 
-  describe("stylists field", () => {
-    it("renders as a select box", () => {
-      render(<AppointmentForm {...testProps} />);
-      expect(field("stylist")).not.toBeNull();
-      expect(field("stylist")).toBeElementWithTag("select");
-    });
+  describe("stylist field", () => {
+    itRendersAsASelectBox("stylist");
+    itHasABlankValueAsTheFirstValue("stylist");
   });
 
   describe("time slot table", () => {
