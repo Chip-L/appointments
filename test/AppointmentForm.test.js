@@ -18,6 +18,7 @@ import {
 describe("AppointmentsForm", () => {
   const blankAppointment = {
     service: "",
+    stylist: "",
   };
   const availableTimeSlots = [
     { startsAt: todayAt(9, 0, 0, 0) },
@@ -78,9 +79,21 @@ describe("AppointmentsForm", () => {
     });
   };
 
+  const itPreSelectsTheExistingValue = (fieldName, existing) => {
+    it("pre-selects the existing value", () => {
+      const appointment = { [fieldName]: existing };
+      render(<AppointmentForm {...testProps} original={appointment} />);
+
+      const option = findOption(field(fieldName), existing);
+
+      expect(option.selected).toBe(true);
+    });
+  };
+
   describe("service field", () => {
     itRendersAsASelectBox("service");
     itHasABlankValueAsTheFirstValue("service");
+    itPreSelectsTheExistingValue("service", "Blow-dry");
 
     it("lists all salon services", () => {
       const services = ["Cut", "Blow-dry"];
@@ -88,21 +101,6 @@ describe("AppointmentsForm", () => {
       expect(labelsOfAllOptions(field("service"))).toEqual(
         expect.arrayContaining(services)
       );
-    });
-
-    it("pre-selects the existing value", () => {
-      const appointment = { service: "Blow-dry" };
-      render(
-        <AppointmentForm
-          {...testProps}
-          selectableServices={services}
-          original={appointment}
-        />
-      );
-
-      const option = findOption(field("service"), "Blow-dry");
-
-      expect(option.selected).toBe(true);
     });
 
     it("renders a label for the service request", () => {
@@ -155,6 +153,23 @@ describe("AppointmentsForm", () => {
   describe("stylist field", () => {
     itRendersAsASelectBox("stylist");
     itHasABlankValueAsTheFirstValue("stylist");
+    itPreSelectsTheExistingValue("stylist", "Ashley");
+
+    it("lists only stylists that can perform the selected service", () => {
+      const serviceStylists = { Cut: ["A", "B"] };
+      const appointment = { service: "Cut" };
+      render(
+        <AppointmentForm
+          {...testProps}
+          original={appointment}
+          serviceStylists={serviceStylists}
+        />
+      );
+
+      expect(labelsOfAllOptions(field("stylist"))).toEqual(
+        expect.arrayContaining(serviceStylists.Cut)
+      );
+    });
   });
 
   describe("time slot table", () => {
