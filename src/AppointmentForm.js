@@ -151,7 +151,7 @@ export const AppointmentForm = ({
       </select>
 
       <label htmlFor="stylist">Stylist</label>
-      <select name="stylist" value={appointment.stylist} readOnly>
+      <select id="stylist" name="stylist" value={appointment.stylist} readOnly>
         <option />
         {stylistsForService.map((s) => (
           <option key={s}>{s}</option>

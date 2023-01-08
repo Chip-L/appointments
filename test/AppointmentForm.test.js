@@ -101,11 +101,19 @@ describe("AppointmentsForm", () => {
     });
   };
 
+  const itAssignsAnIdThatMatchesTheLabelId = (fieldName) => {
+    it("assigns an id that matches the label id", () => {
+      render(<AppointmentForm {...testProps} />);
+      expect(field(fieldName).id).toEqual(fieldName);
+    });
+  };
+
   describe("service field", () => {
     itRendersAsASelectBox("service");
     itHasABlankValueAsTheFirstValue("service");
     itPreSelectsTheExistingValue("service", "Blow-dry");
     itRendersALabel("service", "Salon service");
+    itAssignsAnIdThatMatchesTheLabelId("service");
 
     it("lists all salon services", () => {
       const services = ["Cut", "Blow-dry"];
@@ -113,11 +121,6 @@ describe("AppointmentsForm", () => {
       expect(labelsOfAllOptions(field("service"))).toEqual(
         expect.arrayContaining(services)
       );
-    });
-
-    it("assigns the id 'service' to match the label id", () => {
-      render(<AppointmentForm {...testProps} />);
-      expect(field("service").id).toEqual("service");
     });
 
     it("saves existing service when submitted", () => {
@@ -157,6 +160,8 @@ describe("AppointmentsForm", () => {
     itHasABlankValueAsTheFirstValue("stylist");
     itPreSelectsTheExistingValue("stylist", "Ashley");
     itRendersALabel("stylist", "Stylist");
+    itAssignsAnIdThatMatchesTheLabelId("stylist");
+
     it("lists only stylists that can perform the selected service", () => {
       const serviceStylists = { Cut: ["A", "B"] };
       const appointment = { service: "Cut" };
