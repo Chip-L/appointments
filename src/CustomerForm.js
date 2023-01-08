@@ -22,9 +22,11 @@ export const CustomerForm = ({ original, onSave }) => {
       onSave(customerWithId);
     }
   };
+  const Error = () => <p role="alert">An error occurred during save.</p>;
 
   return (
     <form onSubmit={handleSubmit}>
+      <Error />
       <label htmlFor="firstName">First Name</label>
       <input
         type="text"

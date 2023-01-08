@@ -2,6 +2,7 @@ import React from "react";
 import {
   change,
   clickAndWait,
+  element,
   field,
   form,
   initializeReactContainer,
@@ -200,5 +201,18 @@ describe("CustomerForm", () => {
     await clickAndWait(submitButton());
 
     expect(saveSpy).not.toBeCalledWith();
+  });
+
+  it("renders an alert space", async () => {
+    render(<CustomerForm original={blankCustomer} />);
+    expect(element("[role=alert]")).not.toBeNull();
+  });
+
+  it("renders error message when fetch call fails", async () => {
+    fetchSpy.stubReturnValue(fetchResponseError());
+    render(<CustomerForm original={blankCustomer} />);
+    await clickAndWait(submitButton());
+
+    expect(element("[role=alert]")).toContainText("error occurred");
   });
 });
