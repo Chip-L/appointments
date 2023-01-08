@@ -106,6 +106,11 @@ describe("AppointmentsForm", () => {
       render(<AppointmentForm {...testProps} />);
       expect(labelFor("service")).toContainText("Salon service");
     });
+
+    it("assigns an id that matches the label id", () => {
+      render(<AppointmentForm {...testProps} />);
+      expect(field("service").id).toEqual("service");
+    });
   });
 
   describe("time slot table", () => {

@@ -129,7 +129,7 @@ export const AppointmentForm = ({
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="service">Salon service</label>
-      <select name="service" value={original.service} readOnly>
+      <select name="service" id="service" value={original.service} readOnly>
         <option />
         {selectableServices.map((s) => (
           <option key={s}>{s}</option>
