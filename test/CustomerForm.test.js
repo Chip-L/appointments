@@ -22,6 +22,9 @@ const spy = () => {
 };
 
 describe("CustomerForm", () => {
+  const originalFetch = global.fetch;
+  let fetchSpy;
+
   const blankCustomer = {
     firstName: "",
     lastName: "",
@@ -30,6 +33,11 @@ describe("CustomerForm", () => {
 
   beforeEach(() => {
     initializeReactContainer();
+    fetchSpy = spy();
+    global.fetch = fetchSpy.fn;
+  });
+  afterEach(() => {
+    global.fetch = originalFetch;
   });
 
   it("renders a form", () => {
@@ -131,5 +139,14 @@ describe("CustomerForm", () => {
     itAssignsAnIdThatMatchesTheLabelId("phoneNumber");
     itSubmitsExistingValue("phoneNumber", "existingValue");
     itSubmitsNewValue("phoneNumber", "newValue");
+  });
+
+  it("sends request to POST /customers when submitting the form", () => {
+    render(<CustomerForm original={blankCustomer} onSubmit={() => {}} />);
+    click(submitButton());
+    expect(fetchSpy).toBeCalledWith(
+      "/customers",
+      expect.objectContaining({ method: "POST" })
+    );
   });
 });
