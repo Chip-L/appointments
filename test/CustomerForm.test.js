@@ -13,20 +13,6 @@ import {
 } from "./reactTestExtensions";
 import { CustomerForm } from "../src/CustomerForm";
 
-const spy = () => {
-  let receivedArguments;
-  let returnValue;
-  return {
-    fn: (...args) => {
-      receivedArguments = args;
-      return returnValue;
-    },
-    receivedArguments: () => receivedArguments,
-    receivedArgument: (n) => receivedArguments[n],
-    stubReturnValue: (value) => (returnValue = value),
-  };
-};
-
 const fetchResponseOk = (body) =>
   Promise.resolve({
     ok: true,
@@ -36,8 +22,6 @@ const fetchResponseOk = (body) =>
 const fetchResponseError = () => Promise.resolve({ ok: false });
 
 describe("CustomerForm", () => {
-  const originalFetch = global.fetch;
-
   const bodyOfLastFetchRequest = () => {
     const allCalls = global.fetch.mock.calls;
     const lastCall = allCalls[allCalls.length - 1];
@@ -115,7 +99,7 @@ describe("CustomerForm", () => {
     });
   };
 
-  const itSubmitsNewValue = (fieldName, value) =>
+  const itSubmitsNewValue = (fieldName, value) => {
     it("saves new value when submitted", async () => {
       render(<CustomerForm original={blankCustomer} onSave={() => {}} />);
       change(field(fieldName), value);
@@ -125,6 +109,7 @@ describe("CustomerForm", () => {
         [fieldName]: value,
       });
     });
+  };
 
   describe("first name field", () => {
     itRendersAsATextBox("firstName");
