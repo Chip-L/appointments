@@ -149,4 +149,18 @@ describe("CustomerForm", () => {
       expect.objectContaining({ method: "POST" })
     );
   });
+
+  it("calls fetch with the correct configuration", () => {
+    render(<CustomerForm original={blankCustomer} onSubmit={() => {}} />);
+    click(submitButton());
+    expect(fetchSpy).toBeCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    );
+  });
 });
