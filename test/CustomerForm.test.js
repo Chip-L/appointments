@@ -2,6 +2,7 @@ import React from "react";
 import {
   change,
   click,
+  clickAndWait,
   field,
   form,
   initializeReactContainer,
@@ -25,6 +26,12 @@ const spy = () => {
     stubReturnValue: (value) => (returnValue = value),
   };
 };
+
+const fetchResponseOk = (body) =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve(body),
+  });
 
 describe("CustomerForm", () => {
   const originalFetch = global.fetch;
@@ -144,5 +151,41 @@ describe("CustomerForm", () => {
     itAssignsAnIdThatMatchesTheLabelId("phoneNumber");
     itSubmitsExistingValue("phoneNumber", "existingValue");
     itSubmitsNewValue("phoneNumber", "newValue");
+  });
+
+  it("sends request to POST /customers when submitting the form", () => {
+    render(<CustomerForm original={blankCustomer} />);
+    click(submitButton());
+    expect(fetchSpy).toBeCalledWith(
+      "/customers",
+      expect.objectContaining({
+        method: "POST",
+      })
+    );
+  });
+
+  it("calls fetch with the right configuration", () => {
+    render(<CustomerForm original={blankCustomer} onSubmit={() => {}} />);
+    click(submitButton());
+    expect(fetchSpy).toBeCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    );
+  });
+
+  it.only("notifies onSave when form is submitted", async () => {
+    const customer = { id: 123 };
+    fetchSpy.stubReturnValue(fetchResponseOk(customer));
+    const saveSpy = spy();
+
+    render(<CustomerForm original={customer} onSave={saveSpy.fn} />);
+    await clickAndWait(submitButton());
+
+    expect(saveSpy).toBeCalledWith(customer);
   });
 });
