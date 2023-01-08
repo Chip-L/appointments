@@ -2,7 +2,6 @@ import React from "react";
 import {
   change,
   click,
-  element,
   field,
   form,
   initializeReactContainer,
@@ -12,6 +11,15 @@ import {
   submitButton,
 } from "./reactTestExtensions";
 import { CustomerForm } from "../src/CustomerForm";
+
+const spy = () => {
+  let receivedArguments;
+  return {
+    fn: (...args) => (receivedArguments = args),
+    receivedArguments: () => receivedArguments,
+    receivedArgument: (n) => receivedArguments[n],
+  };
+};
 
 describe("CustomerForm", () => {
   const blankCustomer = {
@@ -76,17 +84,12 @@ describe("CustomerForm", () => {
 
   const itSubmitsExistingValue = (fieldName, value) => {
     it("saves existing value when submitted", () => {
-      expect.hasAssertions();
-
+      const submitSpy = spy();
       const customer = { [fieldName]: value };
-      render(
-        <CustomerForm
-          original={customer}
-          onSubmit={(props) => expect(props[fieldName]).toEqual(value)}
-        />
-      );
-
+      render(<CustomerForm original={customer} onSubmit={submitSpy.fn} />);
       click(submitButton());
+
+      expect(submitSpy).toBeCalledWith(customer);
     });
   };
 
