@@ -150,6 +150,7 @@ export const AppointmentForm = ({
         ))}
       </select>
 
+      <label htmlFor="stylist">Stylist</label>
       <select name="stylist" value={appointment.stylist} readOnly>
         <option />
         {stylistsForService.map((s) => (

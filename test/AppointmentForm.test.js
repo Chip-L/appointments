@@ -90,10 +90,22 @@ describe("AppointmentsForm", () => {
     });
   };
 
+  const itRendersALabel = (fieldName, text) => {
+    it("renders a label", () => {
+      render(<AppointmentForm {...testProps} />);
+      expect(labelFor(fieldName)).not.toBeNull();
+    });
+    it(`renders '${text}' as the label content`, () => {
+      render(<AppointmentForm {...testProps} />);
+      expect(labelFor(fieldName)).toContainText(text);
+    });
+  };
+
   describe("service field", () => {
     itRendersAsASelectBox("service");
     itHasABlankValueAsTheFirstValue("service");
     itPreSelectsTheExistingValue("service", "Blow-dry");
+    itRendersALabel("service", "Salon service");
 
     it("lists all salon services", () => {
       const services = ["Cut", "Blow-dry"];
@@ -101,16 +113,6 @@ describe("AppointmentsForm", () => {
       expect(labelsOfAllOptions(field("service"))).toEqual(
         expect.arrayContaining(services)
       );
-    });
-
-    it("renders a label for the service request", () => {
-      render(<AppointmentForm {...testProps} />);
-      expect(labelFor("service")).not.toBeNull();
-    });
-
-    it(`renders 'Salon service' as the service label content`, () => {
-      render(<AppointmentForm {...testProps} />);
-      expect(labelFor("service")).toContainText("Salon service");
     });
 
     it("assigns the id 'service' to match the label id", () => {
@@ -154,7 +156,7 @@ describe("AppointmentsForm", () => {
     itRendersAsASelectBox("stylist");
     itHasABlankValueAsTheFirstValue("stylist");
     itPreSelectsTheExistingValue("stylist", "Ashley");
-
+    itRendersALabel("stylist", "Stylist");
     it("lists only stylists that can perform the selected service", () => {
       const serviceStylists = { Cut: ["A", "B"] };
       const appointment = { service: "Cut" };
