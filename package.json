@@ -48,6 +48,7 @@
     },
     "setupFilesAfterEnv": [
       "./test/domMatchers.js"
-    ]
+    ],
+    "restoreMocks": true
   }
 }
