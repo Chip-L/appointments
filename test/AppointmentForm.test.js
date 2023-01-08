@@ -101,6 +101,11 @@ describe("AppointmentsForm", () => {
       render(<AppointmentForm {...testProps} />);
       expect(labelFor("service")).not.toBeNull();
     });
+
+    it(`renders 'Salon service' as the service label content`, () => {
+      render(<AppointmentForm {...testProps} />);
+      expect(labelFor("service")).toContainText("Salon service");
+    });
   });
 
   describe("time slot table", () => {
