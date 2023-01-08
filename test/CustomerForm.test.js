@@ -61,7 +61,7 @@ describe("CustomerForm", () => {
       expect(labelFor(fieldName)).not.toBeNull();
     });
 
-    it(`renders '${text}' as the first name label content`, () => {
+    it(`renders '${text}' as the label's content`, () => {
       render(<CustomerForm original={blankCustomer} />);
       expect(labelFor(fieldName)).toContainText(text);
     });
