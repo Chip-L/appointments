@@ -151,7 +151,7 @@ export const AppointmentForm = ({
     }
   };
 
-  const Error = () => <p role="alert" />;
+  const Error = () => <p role="alert">"An error occurred during save."</p>;
 
   return (
     <form onSubmit={handleSubmit}>

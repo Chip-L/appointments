@@ -115,6 +115,14 @@ describe("AppointmentForm", () => {
     expect(element("[role=alert]")).not.toBeNull();
   });
 
+  it("renders error message if fetch call fails", async () => {
+    global.fetch.mockResolvedValue(fetchResponseError());
+    render(<AppointmentForm {...testProps} />);
+    await clickAndWait(submitButton());
+
+    expect(element("[role=alert]")).toContainText("error occurred");
+  });
+
   const itRendersAsASelectBox = (fieldName) => {
     it("renders as a select box", () => {
       render(<AppointmentForm {...testProps} />);
