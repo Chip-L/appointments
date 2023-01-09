@@ -48,4 +48,13 @@ describe("AppointmentsDayViewLoader", () => {
       headers: { "Content-Type": "application/json" },
     });
   });
+
+  it("passes fetched appointments to AppointmentsDayView once they have loaded", async () => {
+    await renderAndWait(<AppointmentsDayViewLoader />);
+
+    expect(AppointmentsDayView).toHaveBeenLastCalledWith(
+      { appointments },
+      expect.anything()
+    );
+  });
 });
