@@ -110,6 +110,7 @@ export const AppointmentForm = ({
   salonClosesAt,
   today,
   availableTimeSlots,
+  onSave,
 }) => {
   const [appointment, setAppointment] = useState(original);
 
@@ -145,6 +146,7 @@ export const AppointmentForm = ({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(appointment),
     });
+    onSave();
   };
 
   return (

@@ -1,5 +1,6 @@
 import React from "react";
 import { AppointmentForm } from "../src/AppointmentForm";
+import { fetchResponseError, fetchResponseOk } from "./builders/fetch";
 import { today, todayAt, tomorrowAt } from "./builders/time";
 import {
   change,
@@ -11,7 +12,6 @@ import {
   initializeReactContainer,
   labelFor,
   render,
-  submit,
   submitAndWait,
   submitButton,
 } from "./reactTestExtensions";
@@ -47,7 +47,7 @@ describe("AppointmentForm", () => {
 
   beforeEach(() => {
     initializeReactContainer();
-    jest.spyOn(global, "fetch");
+    jest.spyOn(global, "fetch").mockResolvedValue(fetchResponseOk);
   });
 
   const startsAtField = (index) => elements("input[name=startsAt]")[index];
@@ -71,9 +71,34 @@ describe("AppointmentForm", () => {
   });
 
   it("prevents the default action when submitting the form", async () => {
-    render(<AppointmentForm {...testProps} />);
+    render(<AppointmentForm {...testProps} onSave={() => {}} />);
     const event = await submitAndWait(form());
     expect(event.defaultPrevented).toBe(true);
+  });
+
+  it("calls fetch with the properties when submitting data", async () => {
+    render(<AppointmentForm {...testProps} onSave={() => {}} />);
+    await clickAndWait(submitButton());
+    expect(global.fetch).toBeCalledWith(
+      "/appointments",
+      expect.objectContaining({
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+    );
+  });
+
+  it("notifies onSave when form is submitted", async () => {
+    global.fetch.mockResolvedValue(fetchResponseOk({}));
+    const saveSpy = jest.fn();
+
+    render(<AppointmentForm {...testProps} onSave={saveSpy} />);
+    await clickAndWait(submitButton());
+
+    expect(saveSpy).toBeCalled();
   });
 
   const itRendersAsASelectBox = (fieldName) => {
@@ -123,7 +148,13 @@ describe("AppointmentForm", () => {
   const itSubmitsExistingValue = (fieldName, existing) => {
     it("saves existing value when submitted", async () => {
       const appointment = { [fieldName]: existing };
-      render(<AppointmentForm {...testProps} original={appointment} />);
+      render(
+        <AppointmentForm
+          {...testProps}
+          original={appointment}
+          onSave={() => {}}
+        />
+      );
       await clickAndWait(submitButton());
       clickAndWait(submitButton());
 
@@ -133,7 +164,7 @@ describe("AppointmentForm", () => {
 
   const itSubmitsNewValue = (fieldName, newValue) => {
     it("saves a new value when submitted", async () => {
-      render(<AppointmentForm {...testProps} />);
+      render(<AppointmentForm {...testProps} onSave={() => {}} />);
       change(field(fieldName), newValue);
       await clickAndWait(submitButton());
 
@@ -291,7 +322,13 @@ describe("AppointmentForm", () => {
       const appointment = {
         startsAt: availableTimeSlots[1].startsAt,
       };
-      render(<AppointmentForm {...testProps} original={appointment} />);
+      render(
+        <AppointmentForm
+          {...testProps}
+          original={appointment}
+          onSave={() => {}}
+        />
+      );
       await clickAndWait(submitButton());
 
       expect(bodyOfLastFetchRequest()).toMatchObject(appointment);
@@ -301,7 +338,13 @@ describe("AppointmentForm", () => {
       const appointment = {
         startsAt: availableTimeSlots[0].startsAt,
       };
-      render(<AppointmentForm {...testProps} original={appointment} />);
+      render(
+        <AppointmentForm
+          {...testProps}
+          original={appointment}
+          onSave={() => {}}
+        />
+      );
 
       await clickAndWait(startsAtField(1));
       await clickAndWait(submitButton());
@@ -334,30 +377,5 @@ describe("AppointmentForm", () => {
 
       expect(cellsWithRadioButtons()).toEqual([7]);
     });
-  });
-
-  it("sends request to POST /appointments when submitting the form", async () => {
-    render(<AppointmentForm {...testProps} />);
-    await clickAndWait(submitButton());
-    expect(global.fetch).toBeCalledWith(
-      "/appointments",
-      expect.objectContaining({
-        method: "POST",
-      })
-    );
-  });
-
-  it("calls fetch with the correct configuration", async () => {
-    render(<AppointmentForm {...testProps} />);
-    await clickAndWait(submitButton());
-    expect(global.fetch).toBeCalledWith(
-      expect.anything(),
-      expect.objectContaining({
-        credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-    );
   });
 });
