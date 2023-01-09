@@ -128,6 +128,19 @@ describe("AppointmentForm", () => {
     expect(element("[role=alert]")).not.toContainText("error occurred");
   });
 
+  it("clears the alert after a second successful submit", async () => {
+    global.fetch
+      .mockResolvedValueOnce(fetchResponseError)
+      .mockResolvedValue(fetchResponseOk());
+    const saveSpy = jest.fn();
+
+    render(<AppointmentForm {...testProps} onSave={saveSpy} />);
+    await clickAndWait(submitButton());
+    await clickAndWait(submitButton());
+
+    expect(element("[role=alert]")).not.toContainText("error occurred");
+  });
+
   const itRendersAsASelectBox = (fieldName) => {
     it("renders as a select box", () => {
       render(<AppointmentForm {...testProps} />);

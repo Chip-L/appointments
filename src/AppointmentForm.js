@@ -148,6 +148,7 @@ export const AppointmentForm = ({
       body: JSON.stringify(appointment),
     });
     if (result.ok) {
+      setError(false);
       onSave();
     } else {
       setError(true);
