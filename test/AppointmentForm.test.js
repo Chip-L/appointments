@@ -110,6 +110,11 @@ describe("AppointmentForm", () => {
     expect(saveSpy).not.toBeCalledWith();
   });
 
+  it("renders an alert space", async () => {
+    render(<AppointmentForm {...testProps} />);
+    expect(element("[role=alert]")).not.toBeNull();
+  });
+
   const itRendersAsASelectBox = (fieldName) => {
     it("renders as a select box", () => {
       render(<AppointmentForm {...testProps} />);

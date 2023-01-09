@@ -151,8 +151,11 @@ export const AppointmentForm = ({
     }
   };
 
+  const Error = () => <p role="alert" />;
+
   return (
     <form onSubmit={handleSubmit}>
+      <Error />
       <label htmlFor="service">Salon service</label>
       <select
         name="service"
