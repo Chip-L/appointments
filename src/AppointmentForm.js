@@ -137,16 +137,18 @@ export const AppointmentForm = ({
     setAppointment((appointment) => ({ ...appointment, [name]: value }));
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    global.fetch("/appointments", {
+    const result = await global.fetch("/appointments", {
       method: "POST",
       credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(appointment),
     });
-    onSave();
+    if (result.ok) {
+      onSave();
+    }
   };
 
   return (

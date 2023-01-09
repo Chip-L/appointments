@@ -101,6 +101,15 @@ describe("AppointmentForm", () => {
     expect(saveSpy).toBeCalled();
   });
 
+  it("does not notify onSave if the POST request returns an error", async () => {
+    global.fetch.mockResolvedValue(fetchResponseError());
+    const saveSpy = jest.fn();
+    render(<AppointmentForm {...testProps} onSave={saveSpy} />);
+    await clickAndWait(submitButton());
+
+    expect(saveSpy).not.toBeCalledWith();
+  });
+
   const itRendersAsASelectBox = (fieldName) => {
     it("renders as a select box", () => {
       render(<AppointmentForm {...testProps} />);
