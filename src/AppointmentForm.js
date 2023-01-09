@@ -113,6 +113,7 @@ export const AppointmentForm = ({
   onSave,
 }) => {
   const [appointment, setAppointment] = useState(original);
+  const [error, setError] = useState(false);
 
   const stylistsForService = appointment.service
     ? serviceStylists[appointment.service]
@@ -148,14 +149,18 @@ export const AppointmentForm = ({
     });
     if (result.ok) {
       onSave();
+    } else {
+      setError(true);
     }
   };
 
-  const Error = () => <p role="alert">"An error occurred during save."</p>;
+  const Error = ({ hasError }) => (
+    <p role="alert">{hasError ? "An error occurred during save." : ""}</p>
+  );
 
   return (
     <form onSubmit={handleSubmit}>
-      <Error />
+      <Error hasError={error} />
       <label htmlFor="service">Salon service</label>
       <select
         name="service"

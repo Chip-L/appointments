@@ -123,6 +123,11 @@ describe("AppointmentForm", () => {
     expect(element("[role=alert]")).toContainText("error occurred");
   });
 
+  it("initially has no text in the alert space", async () => {
+    render(<AppointmentForm {...testProps} />);
+    expect(element("[role=alert]")).not.toContainText("error occurred");
+  });
+
   const itRendersAsASelectBox = (fieldName) => {
     it("renders as a select box", () => {
       render(<AppointmentForm {...testProps} />);
