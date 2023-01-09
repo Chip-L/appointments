@@ -110,7 +110,6 @@ export const AppointmentForm = ({
   salonClosesAt,
   today,
   availableTimeSlots,
-  onSubmit,
 }) => {
   const [appointment, setAppointment] = useState(original);
 
@@ -139,12 +138,13 @@ export const AppointmentForm = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     global.fetch("/appointments", {
       method: "POST",
       credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(appointment),
     });
-    onSubmit(appointment);
   };
 
   return (

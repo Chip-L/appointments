@@ -3,7 +3,6 @@ import { AppointmentForm } from "../src/AppointmentForm";
 import { today, todayAt, tomorrowAt } from "./builders/time";
 import {
   change,
-  click,
   clickAndWait,
   element,
   elements,
@@ -13,6 +12,7 @@ import {
   labelFor,
   render,
   submit,
+  submitAndWait,
   submitButton,
 } from "./reactTestExtensions";
 import { bodyOfLastFetchRequest } from "./spyHelpers";
@@ -70,9 +70,9 @@ describe("AppointmentForm", () => {
     expect(submitButton()).not.toBeNull();
   });
 
-  it("prevents the default action when submitting the form", () => {
-    render(<AppointmentForm {...testProps} onSubmit={() => {}} />);
-    const event = submit(form());
+  it("prevents the default action when submitting the form", async () => {
+    render(<AppointmentForm {...testProps} />);
+    const event = await submitAndWait(form());
     expect(event.defaultPrevented).toBe(true);
   });
 
@@ -121,33 +121,23 @@ describe("AppointmentForm", () => {
   };
 
   const itSubmitsExistingValue = (fieldName, existing) => {
-    it("saves existing value when submitted", () => {
-      expect.hasAssertions();
+    it("saves existing value when submitted", async () => {
       const appointment = { [fieldName]: existing };
-      render(
-        <AppointmentForm
-          {...testProps}
-          original={appointment}
-          onSubmit={(props) => expect(props[fieldName]).toEqual(existing)}
-        />
-      );
-      click(submitButton());
-      // clickAndWait(submitButton());
-      // expect(bodyOfLastFetchRequest()).toMatchObject(existing)
+      render(<AppointmentForm {...testProps} original={appointment} />);
+      await clickAndWait(submitButton());
+      clickAndWait(submitButton());
+
+      expect(bodyOfLastFetchRequest()).toMatchObject(appointment);
     });
   };
 
   const itSubmitsNewValue = (fieldName, newValue) => {
-    it("saves a new value when submitted", () => {
-      expect.hasAssertions();
-      render(
-        <AppointmentForm
-          {...testProps}
-          onSubmit={(props) => expect(props[fieldName]).toEqual(newValue)}
-        />
-      );
+    it("saves a new value when submitted", async () => {
+      render(<AppointmentForm {...testProps} />);
       change(field(fieldName), newValue);
-      click(submitButton());
+      await clickAndWait(submitButton());
+
+      expect(bodyOfLastFetchRequest()).toMatchObject({ [fieldName]: newValue });
     });
   };
 
@@ -243,15 +233,15 @@ describe("AppointmentForm", () => {
       const availableTimeSlots = [
         {
           startsAt: todayAt(9),
-          // stylists: ["Ashley"],
+          stylists: ["Ashley"],
         },
         {
           startsAt: todayAt(9, 30),
-          // stylists: ["Ashley"],
+          stylists: ["Ashley"],
         },
         {
           startsAt: tomorrowAt(9, 30),
-          // stylists: ["Ashley"],
+          stylists: ["Ashley"],
         },
       ];
 
@@ -297,39 +287,28 @@ describe("AppointmentForm", () => {
       expect(startsAtField(1).checked).toEqual(true);
     });
 
-    it("saves existing value when submitted", () => {
-      expect.hasAssertions();
+    it("saves existing value when submitted", async () => {
       const appointment = {
         startsAt: availableTimeSlots[1].startsAt,
       };
-      render(
-        <AppointmentForm
-          {...testProps}
-          original={appointment}
-          onSubmit={({ startsAt }) =>
-            expect(startsAt).toEqual(availableTimeSlots[1].startsAt)
-          }
-        />
-      );
-      click(submitButton());
+      render(<AppointmentForm {...testProps} original={appointment} />);
+      await clickAndWait(submitButton());
+
+      expect(bodyOfLastFetchRequest()).toMatchObject(appointment);
     });
 
-    it("saves new value when submitted", () => {
-      expect.hasAssertions();
+    it("saves new value when submitted", async () => {
       const appointment = {
         startsAt: availableTimeSlots[0].startsAt,
       };
-      render(
-        <AppointmentForm
-          {...testProps}
-          original={appointment}
-          onSubmit={({ startsAt }) =>
-            expect(startsAt).toEqual(availableTimeSlots[1].startsAt)
-          }
-        />
-      );
-      click(startsAtField(1));
-      click(submitButton());
+      render(<AppointmentForm {...testProps} original={appointment} />);
+
+      await clickAndWait(startsAtField(1));
+      await clickAndWait(submitButton());
+
+      expect(bodyOfLastFetchRequest()).toMatchObject({
+        startsAt: availableTimeSlots[1].startsAt,
+      });
     });
 
     it("filters appointments by selected stylist", () => {
@@ -358,7 +337,7 @@ describe("AppointmentForm", () => {
   });
 
   it("sends request to POST /appointments when submitting the form", async () => {
-    render(<AppointmentForm {...testProps} onSubmit={() => {}} />);
+    render(<AppointmentForm {...testProps} />);
     await clickAndWait(submitButton());
     expect(global.fetch).toBeCalledWith(
       "/appointments",
@@ -369,7 +348,7 @@ describe("AppointmentForm", () => {
   });
 
   it("calls fetch with the correct configuration", async () => {
-    render(<AppointmentForm {...testProps} onSubmit={() => {}} />);
+    render(<AppointmentForm {...testProps} />);
     await clickAndWait(submitButton());
     expect(global.fetch).toBeCalledWith(
       expect.anything(),
