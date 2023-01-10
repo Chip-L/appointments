@@ -1,5 +1,6 @@
 import React from "react";
 import { initializeReactContainer, render } from "../reactTestExtensions";
+import { stripTerminalColor } from "./matcherUtils";
 import { toBeRenderedWithProps } from "./toBeRenderedWithProps";
 
 describe("toBeRenderedWithProps", () => {
@@ -32,5 +33,13 @@ describe("toBeRenderedWithProps", () => {
     render(<Component c="d" />);
     const result = toBeRenderedWithProps(Component, { c: "d" });
     expect(result.pass).toBe(true);
+  });
+
+  it("returns a message that contains the source line if no match", () => {
+    render(<Component a="b" />);
+    const result = toBeRenderedWithProps(Component, { c: "d" });
+    expect(stripTerminalColor(result.message())).toContain(
+      `expect(mockedComponent).toBeRenderedWithProps({"c": "d"})`
+    );
   });
 });

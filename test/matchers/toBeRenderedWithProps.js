@@ -1,9 +1,17 @@
 import { equals } from "@jest/expect-utils";
+import { matcherHint, printExpected } from "jest-matcher-utils";
 
 export const toBeRenderedWithProps = (mockedComponent, expectedProps) => {
   const mockedCall = mockedComponent.mock.calls.at(-1);
   const actualProps = mockedCall ? mockedCall[0] : null;
   const pass = equals(actualProps, expectedProps);
 
-  return { pass };
+  const message = () =>
+    matcherHint(
+      "toBeRenderedWithProps",
+      "mockedComponent",
+      printExpected(expectedProps),
+      {}
+    );
+  return { pass, message };
 };
