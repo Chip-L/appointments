@@ -1,5 +1,5 @@
 import { equals } from "@jest/expect-utils";
-import { matcherHint, printExpected } from "jest-matcher-utils";
+import { matcherHint, printExpected, printReceived } from "jest-matcher-utils";
 
 export const toBeRenderedWithProps = (mockedComponent, expectedProps) => {
   const mockedCall = mockedComponent.mock.calls.at(-1);
@@ -14,12 +14,14 @@ export const toBeRenderedWithProps = (mockedComponent, expectedProps) => {
       { isNot: pass }
     );
 
-  const actualHintText = () => {
+  const actualHint = () => {
     if (!mockedCall) {
-      return `Component was not found`;
+      return `Mocked component was never rendered`;
+    }
+    if (!equals(actualProps, expectedProps)) {
+      return `Rendered with props: ${printReceived(actualProps)}`;
     }
   };
-  const actualHint = () => `Actual: ${actualHintText()}`;
 
   const message = () => [sourceHint(), actualHint()].join("\n\n");
 

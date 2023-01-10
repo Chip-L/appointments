@@ -54,7 +54,15 @@ describe("toBeRenderedWithProps", () => {
   it("returns a message if mock has not been rendered", () => {
     const result = toBeRenderedWithProps(Component, {});
     expect(stripTerminalColor(result.message())).toContain(
-      `Actual: Component was not found`
+      `Mocked component was never rendered`
+    );
+  });
+
+  it("returns a message if properties do not match", () => {
+    render(<Component a="b" />);
+    const result = toBeRenderedWithProps(Component, { c: "d" });
+    expect(stripTerminalColor(result.message())).toContain(
+      `Rendered with props: {"a": "b"}`
     );
   });
 });
