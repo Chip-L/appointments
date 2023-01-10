@@ -15,4 +15,9 @@ describe("toBeRenderedWithProps", () => {
     const result = toBeRenderedWithProps(Component, {});
     expect(result.pass).toBe(true);
   });
+
+  it("returns pass is false when mock has not been rendered", () => {
+    const result = toBeRenderedWithProps(Component, {});
+    expect(result.pass).toBe(false);
+  });
 });
