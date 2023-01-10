@@ -51,6 +51,13 @@ describe("toBeRenderedWithProps", () => {
     );
   });
 
+  it("returns a message that the passed object is not a mock", () => {
+    const result = toBeRenderedWithProps(<div />, {});
+    expect(stripTerminalColor(result.message())).toContain(
+      `mockedComponent is not a mock`
+    );
+  });
+
   it("returns a message if mock has not been rendered", () => {
     const result = toBeRenderedWithProps(Component, {});
     expect(stripTerminalColor(result.message())).toContain(
