@@ -26,4 +26,11 @@ describe("toBeRenderedWithProps", () => {
     const result = toBeRenderedWithProps(Component, { c: "d" });
     expect(result.pass).toBe(false);
   });
+
+  it("returns pass is true when the properties of the last render match", () => {
+    render(<Component a="b" />);
+    render(<Component c="d" />);
+    const result = toBeRenderedWithProps(Component, { c: "d" });
+    expect(result.pass).toBe(true);
+  });
 });
