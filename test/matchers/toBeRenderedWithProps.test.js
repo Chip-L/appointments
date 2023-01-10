@@ -22,6 +22,11 @@ describe("toBeRenderedWithProps", () => {
     expect(result.pass).toBe(false);
   });
 
+  it("returns pass is false when mock is null", () => {
+    const result = toBeRenderedWithProps(null, {});
+    expect(result.pass).toBe(false);
+  });
+
   it("returns pass is false when the properties do not match", () => {
     render(<Component a="b" />);
     const result = toBeRenderedWithProps(Component, { c: "d" });
