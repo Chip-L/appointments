@@ -42,4 +42,19 @@ describe("toBeRenderedWithProps", () => {
       `expect(mockedComponent).toBeRenderedWithProps({"c": "d"})`
     );
   });
+
+  it("returns a message that contains the source line if negated match", () => {
+    render(<Component c="d" />);
+    const result = toBeRenderedWithProps(Component, { c: "d" });
+    expect(stripTerminalColor(result.message())).toContain(
+      `expect(mockedComponent).not.toBeRenderedWithProps({"c": "d"})`
+    );
+  });
+
+  it("returns a message if mock has not been rendered", () => {
+    const result = toBeRenderedWithProps(Component, {});
+    expect(stripTerminalColor(result.message())).toContain(
+      `Actual: Component was not found`
+    );
+  });
 });
