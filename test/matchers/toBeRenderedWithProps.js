@@ -36,5 +36,28 @@ export const toBeRenderedFirstWithProps = (mockedComponent, expectedProps) => {
   const actualProps = mockedCall ? mockedCall[0] : null;
   const pass = equals(actualProps, expectedProps);
 
-  return { pass };
+  console.log(pass);
+  const sourceHint = () =>
+    matcherHint(
+      "toBeRenderedFirstWithProps",
+      "mockedComponent",
+      printExpected(expectedProps),
+      {}
+      // { isNot: pass }
+    );
+
+  const message = () => sourceHint();
+
+  console.log({
+    calls: mockedComponent
+      ? mockedComponent.mock.calls.map((call) => call[0])
+      : undefined,
+    mockedCall,
+    actualProps,
+    expectedProps,
+    sourceHint: sourceHint(),
+    message: message(),
+  });
+
+  return { pass, message };
 };

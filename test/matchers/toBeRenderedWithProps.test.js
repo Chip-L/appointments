@@ -86,6 +86,7 @@ describe("toBeRenderedFirstWithProps", () => {
   let Component;
 
   beforeEach(() => {
+    console.log(expect.getState().currentTestName);
     initializeReactContainer();
     Component = jest.fn(() => <div />);
   });
@@ -112,20 +113,20 @@ describe("toBeRenderedFirstWithProps", () => {
     expect(result.pass).toBe(false);
   });
 
-  // it("returns pass is true when the properties of the last render match", () => {
-  //   render(<Component a="b" />);
-  //   render(<Component c="d" />);
-  //   const result = toBeRenderedWithProps(Component, { c: "d" });
-  //   expect(result.pass).toBe(true);
-  // });
+  it("returns pass is true when the properties of the first render match", () => {
+    render(<Component a="b" />);
+    render(<Component c="d" />);
+    const result = toBeRenderedFirstWithProps(Component, { a: "b" });
+    expect(result.pass).toBe(true);
+  });
 
-  // it("returns a message that contains the source line if no match", () => {
-  //   render(<Component a="b" />);
-  //   const result = toBeRenderedWithProps(Component, { c: "d" });
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `expect(mockedComponent).toBeRenderedWithProps({"c": "d"})`
-  //   );
-  // });
+  it("returns a message that contains the source line if no match", () => {
+    render(<Component a="b" />);
+    const result = toBeRenderedFirstWithProps(Component, { c: "d" });
+    expect(stripTerminalColor(result.message())).toContain(
+      `expect(mockedComponent).toBeRenderedFirstWithProps({"c": "d"})`
+    );
+  });
 
   // it("returns a message that contains the source line if negated match", () => {
   //   render(<Component c="d" />);
