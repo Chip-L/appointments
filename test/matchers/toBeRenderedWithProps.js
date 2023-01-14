@@ -30,3 +30,11 @@ export const toBeRenderedWithProps = (mockedComponent, expectedProps) => {
 
   return { pass, message };
 };
+
+export const toBeRenderedFirstWithProps = (mockedComponent, expectedProps) => {
+  const mockedCall = mockedComponent?.mock.calls[0];
+  const actualProps = mockedCall ? mockedCall[0] : null;
+  const pass = equals(actualProps, expectedProps);
+
+  return { pass };
+};
