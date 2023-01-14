@@ -1,18 +1,19 @@
 import { equals } from "@jest/expect-utils";
 import { matcherHint, printExpected, printReceived } from "jest-matcher-utils";
 
-export const toBeRenderedWithProps = (mockedComponent, expectedProps) => {
-  const mockedCall = mockedComponent?.mock?.calls.at(-1);
+const toBeRenderedWithSpecificProps = (
+  mockedComponent,
+  expectedProps,
+  mockedCall,
+  matcherName
+) => {
   const actualProps = mockedCall ? mockedCall[0] : null;
   const pass = equals(actualProps, expectedProps);
 
   const sourceHint = () =>
-    matcherHint(
-      "toBeRenderedWithProps",
-      "mockedComponent",
-      printExpected(expectedProps),
-      { isNot: pass }
-    );
+    matcherHint(matcherName, "mockedComponent", printExpected(expectedProps), {
+      isNot: pass,
+    });
 
   const actualHint = () => {
     if (!mockedComponent || !mockedComponent.mock) {
@@ -21,7 +22,7 @@ export const toBeRenderedWithProps = (mockedComponent, expectedProps) => {
     if (!mockedCall) {
       return `Mocked component was never rendered`;
     }
-    if (!equals(actualProps, expectedProps)) {
+    if (!pass) {
       return `Rendered with props: ${printReceived(actualProps)}`;
     }
   };
@@ -31,44 +32,24 @@ export const toBeRenderedWithProps = (mockedComponent, expectedProps) => {
   return { pass, message };
 };
 
-export const toBeRenderedFirstWithProps = (mockedComponent, expectedProps) => {
-  const mockedCall = mockedComponent?.mock?.calls[0];
-  const actualProps = mockedCall ? mockedCall[0] : null;
-  const pass = equals(actualProps, expectedProps);
+export const toBeRenderedWithProps = (mockedComponent, expectedProps) => {
+  const lastCall = mockedComponent?.mock?.calls.at(-1);
 
-  console.log(pass);
-  const sourceHint = () =>
-    matcherHint(
-      "toBeRenderedFirstWithProps",
-      "mockedComponent",
-      printExpected(expectedProps),
-      { isNot: pass }
-    );
-
-  const actualHint = () => {
-    if (!mockedComponent?.mock) {
-      return "mockedComponent is not a mock";
-    }
-    if (!mockedCall) {
-      return "Mocked component was never rendered";
-    }
-    if (!pass) {
-      return `Rendered with props: ${printReceived(actualProps)}`;
-    }
-  };
-  const message = () => [sourceHint(), actualHint()].join("/n/n");
-
-  console.log({
-    calls: mockedComponent
-      ? mockedComponent.mock?.calls.map((call) => call[0])
-      : undefined,
-    mockedCall,
-    actualProps,
+  return toBeRenderedWithSpecificProps(
+    mockedComponent,
     expectedProps,
-    sourceHint: sourceHint(),
-    actualHint: actualHint(),
-    message: message(),
-  });
+    lastCall,
+    "toBeRenderedWithProps"
+  );
+};
 
-  return { pass, message };
+export const toBeRenderedFirstWithProps = (mockedComponent, expectedProps) => {
+  const firstCall = mockedComponent?.mock?.calls[0];
+
+  return toBeRenderedWithSpecificProps(
+    mockedComponent,
+    expectedProps,
+    firstCall,
+    "toBeRenderedFirstWithProps"
+  );
 };
