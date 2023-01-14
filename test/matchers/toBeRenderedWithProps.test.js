@@ -143,12 +143,12 @@ describe("toBeRenderedFirstWithProps", () => {
     );
   });
 
-  // it("returns a message if mock has not been rendered", () => {
-  //   const result = toBeRenderedWithProps(Component, {});
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `Mocked component was never rendered`
-  //   );
-  // });
+  it("returns a message if mock has not been rendered", () => {
+    const result = toBeRenderedFirstWithProps(Component, {});
+    expect(stripTerminalColor(result.message())).toContain(
+      `Mocked component was never rendered`
+    );
+  });
 
   // it("returns a message if properties do not match", () => {
   //   render(<Component a="b" />);
