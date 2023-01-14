@@ -32,7 +32,7 @@ export const toBeRenderedWithProps = (mockedComponent, expectedProps) => {
 };
 
 export const toBeRenderedFirstWithProps = (mockedComponent, expectedProps) => {
-  const mockedCall = mockedComponent?.mock.calls[0];
+  const mockedCall = mockedComponent?.mock?.calls[0];
   const actualProps = mockedCall ? mockedCall[0] : null;
   const pass = equals(actualProps, expectedProps);
 
@@ -45,11 +45,12 @@ export const toBeRenderedFirstWithProps = (mockedComponent, expectedProps) => {
       { isNot: pass }
     );
 
-  const message = () => sourceHint();
+  const message = () =>
+    [sourceHint(), "mockedComponent is not a mock"].join("/n/n");
 
   console.log({
     calls: mockedComponent
-      ? mockedComponent.mock.calls.map((call) => call[0])
+      ? mockedComponent.mock?.calls.map((call) => call[0])
       : undefined,
     mockedCall,
     actualProps,
