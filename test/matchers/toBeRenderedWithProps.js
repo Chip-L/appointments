@@ -42,8 +42,7 @@ export const toBeRenderedFirstWithProps = (mockedComponent, expectedProps) => {
       "toBeRenderedFirstWithProps",
       "mockedComponent",
       printExpected(expectedProps),
-      {}
-      // { isNot: pass }
+      { isNot: pass }
     );
 
   const message = () => sourceHint();

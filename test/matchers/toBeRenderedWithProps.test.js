@@ -128,13 +128,13 @@ describe("toBeRenderedFirstWithProps", () => {
     );
   });
 
-  // it("returns a message that contains the source line if negated match", () => {
-  //   render(<Component c="d" />);
-  //   const result = toBeRenderedWithProps(Component, { c: "d" });
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `expect(mockedComponent).not.toBeRenderedWithProps({"c": "d"})`
-  //   );
-  // });
+  it("returns a message that contains the source line if negated match", () => {
+    render(<Component c="d" />);
+    const result = toBeRenderedFirstWithProps(Component, { c: "d" });
+    expect(stripTerminalColor(result.message())).toContain(
+      `expect(mockedComponent).not.toBeRenderedFirstWithProps({"c": "d"})`
+    );
+  });
 
   // it("returns a message that the passed object is not a mock", () => {
   //   const result = toBeRenderedWithProps(<div />, {});
