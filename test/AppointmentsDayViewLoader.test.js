@@ -52,10 +52,7 @@ describe("AppointmentsDayViewLoader", () => {
   it("passes fetched appointments to AppointmentsDayView once they have loaded", async () => {
     await renderAndWait(<AppointmentsDayViewLoader />);
 
-    expect(AppointmentsDayView).toHaveBeenLastCalledWith(
-      { appointments },
-      expect.anything()
-    );
+    expect(AppointmentsDayView).toBeRenderedWithProps({ appointments });
   });
 
   it("re-requests appointment when today prop changes", async () => {
