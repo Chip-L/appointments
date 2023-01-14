@@ -2,7 +2,10 @@ import { toBeElementWithTag } from "./matchers/toBeElementWithTag";
 import { toContainText } from "./matchers/toContainText";
 import { toHaveClass } from "./matchers/toHaveClass";
 import { toBeInputFieldOfType } from "./matchers/toBeInputFieldOfType";
-import { toBeRenderedWithProps } from "./matchers/toBeRenderedWithProps";
+import {
+  toBeRenderedFirstWithProps,
+  toBeRenderedWithProps,
+} from "./matchers/toBeRenderedWithProps";
 
 expect.extend({
   toBeElementWithTag,
@@ -10,4 +13,5 @@ expect.extend({
   toContainText,
   toHaveClass,
   toBeRenderedWithProps,
+  toBeRenderedFirstWithProps,
 });

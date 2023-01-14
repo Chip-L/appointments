@@ -86,7 +86,6 @@ describe("toBeRenderedFirstWithProps", () => {
   let Component;
 
   beforeEach(() => {
-    console.log(expect.getState().currentTestName);
     initializeReactContainer();
     Component = jest.fn(() => <div />);
   });
