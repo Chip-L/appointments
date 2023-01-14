@@ -46,14 +46,17 @@ export const toBeRenderedFirstWithProps = (mockedComponent, expectedProps) => {
     );
 
   const actualHint = () => {
-    if (!mockedComponent) {
+    if (!mockedComponent?.mock) {
       return "mockedComponent is not a mock";
     }
-    if (!mockedComponent.mock) {
+    if (!mockedCall) {
       return "Mocked component was never rendered";
     }
+    if (!pass) {
+      return `Rendered with props: ${printReceived(actualProps)}`;
+    }
   };
-  const message = () => [sourceHint(), actualHint].join("/n/n");
+  const message = () => [sourceHint(), actualHint()].join("/n/n");
 
   console.log({
     calls: mockedComponent

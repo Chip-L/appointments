@@ -150,11 +150,11 @@ describe("toBeRenderedFirstWithProps", () => {
     );
   });
 
-  // it("returns a message if properties do not match", () => {
-  //   render(<Component a="b" />);
-  //   const result = toBeRenderedWithProps(Component, { c: "d" });
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `Rendered with props: {"a": "b"}`
-  //   );
-  // });
+  it("returns a message if properties do not match", () => {
+    render(<Component a="b" />);
+    const result = toBeRenderedFirstWithProps(Component, { c: "d" });
+    expect(stripTerminalColor(result.message())).toContain(
+      `Rendered with props: {"a": "b"}`
+    );
+  });
 });
