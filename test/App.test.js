@@ -8,6 +8,7 @@ import {
 import { AppointmentsDayViewLoader } from "../src/AppointmentsDayViewLoader";
 import { CustomerForm } from "../src/CustomerForm";
 import { App } from "../src/App";
+import { blankCustomer } from "./builders/customer";
 
 jest.mock("../src/AppointmentsDayViewLoader", () => ({
   AppointmentsDayViewLoader: jest.fn(() => (
@@ -20,6 +21,9 @@ jest.mock("../src/CustomerForm", () => ({
 }));
 
 describe("App", () => {
+  const beginAddingCustomerAndAppointment = () =>
+    click(element("menu > li > button:first-of-type"));
+
   beforeEach(() => {
     initializeReactContainer();
   });
@@ -43,7 +47,22 @@ describe("App", () => {
 
   it("displays the CustomerForm when button is clicked", () => {
     render(<App />);
-    click(element("menu > li > button:first-of-type"));
+    beginAddingCustomerAndAppointment();
     expect(element("#CustomerForm")).not.toBeNull();
+  });
+
+  it("passes a blank original customer object to CustomerForm", () => {
+    const blankCustomer = {
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+    };
+    render(<App />);
+    beginAddingCustomerAndAppointment;
+    expect(CustomerForm).toBeRenderedWithProps(
+      expect.objectContaining({
+        original: blankCustomer,
+      })
+    );
   });
 });

@@ -2,6 +2,12 @@ import React, { useCallback, useState } from "react";
 import { AppointmentsDayViewLoader } from "./AppointmentsDayViewLoader";
 import { CustomerForm } from "./CustomerForm";
 
+const blankCustomer = {
+  firstName: "",
+  lastName: "",
+  phoneNumber: "",
+};
+
 export const App = () => {
   const [view, setView] = useState("dayView");
 
@@ -16,7 +22,9 @@ export const App = () => {
           </button>
         </li>
       </menu>
-      {view === "addCustomer" ? <CustomerForm /> : null}
+      {view === "addCustomer" ? (
+        <CustomerForm original={blankCustomer} />
+      ) : null}
       <AppointmentsDayViewLoader />
     </>
   );
