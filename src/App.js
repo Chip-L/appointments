@@ -17,12 +17,13 @@ const blankAppointment = {
 
 export const App = () => {
   const [view, setView] = useState("dayView");
+  const [customer, setCustomer] = useState();
 
   const transitionToAddCustomer = useCallback(() => setView("addCustomer"), []);
-  const transitionToAddAppointment = useCallback(
-    () => setView("addAppointment"),
-    []
-  );
+  const transitionToAddAppointment = useCallback((customer) => {
+    setCustomer(customer);
+    setView("addAppointment");
+  }, []);
 
   switch (view) {
     case "addCustomer":
@@ -33,7 +34,11 @@ export const App = () => {
         />
       );
     case "addAppointment":
-      return <AppointmentFormLoader original={blankAppointment} />;
+      return (
+        <AppointmentFormLoader
+          original={{ ...blankAppointment, customer: customer.id }}
+        />
+      );
     default:
       return (
         <>
