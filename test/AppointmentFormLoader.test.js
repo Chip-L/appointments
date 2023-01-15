@@ -20,4 +20,9 @@ describe("AppointmentFormLoader", () => {
     await renderAndWait(<AppointmentFormLoader />);
     expect(element("#AppointmentForm")).not.toBeNull();
   });
+
+  it("initially passes empty array of time slots to AppointmentsForm", async () => {
+    renderAndWait(<AppointmentFormLoader />);
+    expect(AppointmentForm).toBeRenderedFirstWithProps({ original: [] });
+  });
 });
