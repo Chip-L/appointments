@@ -1,7 +1,7 @@
 import React from "react";
 import { initializeReactContainer, render } from "../reactTestExtensions";
 import { stripTerminalColor } from "./matcherUtils";
-import { toBeRendered } from "./toBeRenedered";
+import { toBeRendered } from "./toBeRendered";
 
 describe("toBeRendered", () => {
   let Component;
@@ -17,13 +17,13 @@ describe("toBeRendered", () => {
     expect(result.pass).toBe(true);
   });
 
+  it("returns pass is false when mock is null", () => {
+    const result = toBeRendered(null);
+    expect(result.pass).toBe(false);
+  });
+
   // it("returns pass is false when mock has not been rendered", () => {
   //   const result = toBeRendered(Component);
-  //   expect(result.pass).toBe(false);
-  // });
-
-  // it("returns pass is false when mock is null", () => {
-  //   const result = toBeRendered(null);
   //   expect(result.pass).toBe(false);
   // });
 
