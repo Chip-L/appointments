@@ -22,31 +22,18 @@ describe("toBeRendered", () => {
     expect(result.pass).toBe(false);
   });
 
-  // it("returns pass is false when mock has not been rendered", () => {
-  //   const result = toBeRendered(Component);
-  //   expect(result.pass).toBe(false);
-  // });
+  it("returns pass is false when mock has not been rendered", () => {
+    const result = toBeRendered(Component);
+    expect(result.pass).toBe(false);
+  });
 
-  // it("returns pass is false when the properties do not match", () => {
-  //   render(<Component a="b" />);
-  //   const result = toBeRendered(Component, { c: "d" });
-  //   expect(result.pass).toBe(false);
-  // });
-
-  // it("returns pass is true when the properties of the first render match", () => {
-  //   render(<Component a="b" />);
-  //   render(<Component c="d" />);
-  //   const result = toBeRendered(Component, { a: "b" });
-  //   expect(result.pass).toBe(true);
-  // });
-
-  // it("returns a message that contains the source line if no match", () => {
-  //   render(<Component a="b" />);
-  //   const result = toBeRendered(Component, { c: "d" });
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `expect(mockedComponent).toBeRendered({"c": "d"})`
-  //   );
-  // });
+  it("returns a message that contains the source line if no match", () => {
+    render(<Component a="b" />);
+    const result = toBeRendered(Component, { c: "d" });
+    expect(stripTerminalColor(result.message())).toContain(
+      `expect(mockedComponent).toBeRendered()`
+    );
+  });
 
   // it("returns a message that contains the source line if negated match", () => {
   //   render(<Component c="d" />);
