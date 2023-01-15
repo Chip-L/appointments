@@ -35,6 +35,8 @@ describe("App", () => {
   const exampleCustomer = { id: 123 };
   const saveCustomer = (customer = exampleCustomer) =>
     act(() => propsOf(CustomerForm).onSave(customer));
+  const saveAppointment = () =>
+    act(() => propsOf(AppointmentFormLoader).onSave());
 
   beforeEach(() => {
     initializeReactContainer();
@@ -115,5 +117,13 @@ describe("App", () => {
         original: expect.objectContaining({ customer: customer.id }),
       })
     );
+  });
+
+  it("renders AppointmentsDayViewLoader after AppointmentForm is submitted", () => {
+    render(<App />);
+    beginAddingCustomerAndAppointment();
+    saveCustomer();
+    saveAppointment();
+    expect(AppointmentsDayViewLoader).toBeRendered();
   });
 });
