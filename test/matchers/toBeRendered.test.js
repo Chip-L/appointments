@@ -48,12 +48,12 @@ describe("toBeRendered", () => {
     );
   });
 
-  // it("returns a message that the passed object is not a mock", () => {
-  //   const result = toBeRendered(<div />, {});
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `mockedComponent is not a mock`
-  //   );
-  // });
+  it("returns a message that the passed object is not a mock", () => {
+    const result = toBeRendered(<div />);
+    expect(stripTerminalColor(result.message())).toContain(
+      `mockedComponent is not a mock`
+    );
+  });
 
   // it("returns a message if mock has not been rendered", () => {
   //   const result = toBeRendered(Component, {});
