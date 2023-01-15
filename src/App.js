@@ -13,7 +13,9 @@ export const App = () => {
 
   const transitionToAddCustomer = useCallback(() => setView("addCustomer"), []);
 
-  return (
+  return view === "addCustomer" ? (
+    <CustomerForm original={blankCustomer} />
+  ) : (
     <>
       <menu>
         <li>
@@ -22,11 +24,7 @@ export const App = () => {
           </button>
         </li>
       </menu>
-      {view === "addCustomer" ? (
-        <CustomerForm original={blankCustomer} />
-      ) : (
-        <AppointmentsDayViewLoader />
-      )}
+      <AppointmentsDayViewLoader />
     </>
   );
 };

@@ -60,9 +60,16 @@ describe("App", () => {
       })
     );
   });
+
   it("hides the AppointmentsDayViewLoader when button is clicked", () => {
     render(<App />);
     beginAddingCustomerAndAppointment();
     expect(element("#AppointmentsDayViewLoader")).toBeNull();
+  });
+
+  it("hides the button bar when CustomerForm is being displayed", () => {
+    render(<App />);
+    beginAddingCustomerAndAppointment();
+    expect(element("menu")).toBeNull();
   });
 });
