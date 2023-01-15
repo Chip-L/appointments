@@ -55,18 +55,10 @@ describe("toBeRendered", () => {
     );
   });
 
-  // it("returns a message if mock has not been rendered", () => {
-  //   const result = toBeRendered(Component, {});
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `Mocked component was never rendered`
-  //   );
-  // });
-
-  // it("returns a message if properties do not match", () => {
-  //   render(<Component a="b" />);
-  //   const result = toBeRendered(Component, { c: "d" });
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `Rendered with props: {"a": "b"}`
-  //   );
-  // });
+  it("returns a message if mock has not been rendered", () => {
+    const result = toBeRendered(Component);
+    expect(stripTerminalColor(result.message())).toContain(
+      `Mocked component was never rendered`
+    );
+  });
 });

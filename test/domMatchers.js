@@ -6,12 +6,14 @@ import {
   toBeRenderedFirstWithProps,
   toBeRenderedWithProps,
 } from "./matchers/toBeRenderedWithProps";
+import { toBeRendered } from "./matchers/toBeRendered";
 
 expect.extend({
   toBeElementWithTag,
   toBeInputFieldOfType,
+  toBeRendered,
+  toBeRenderedFirstWithProps,
+  toBeRenderedWithProps,
   toContainText,
   toHaveClass,
-  toBeRenderedWithProps,
-  toBeRenderedFirstWithProps,
 });

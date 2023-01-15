@@ -10,6 +10,9 @@ export const toBeRendered = (mockedComponent) => {
     if (!mockedComponent?.mock) {
       return `mockedComponent is not a mock`;
     }
+    if (!pass) {
+      return `Mocked component was never rendered`;
+    }
   };
 
   const message = () => [sourceHint(), actualHint()].join("\n\n");
