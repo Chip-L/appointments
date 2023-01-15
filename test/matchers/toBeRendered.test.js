@@ -27,6 +27,11 @@ describe("toBeRendered", () => {
     expect(result.pass).toBe(false);
   });
 
+  it("returns pass is false when mock has not a mock", () => {
+    const result = toBeRendered(<div />);
+    expect(result.pass).toBe(false);
+  });
+
   it("returns a message that contains the source line if no match", () => {
     render(<Component />);
     const result = toBeRendered();
