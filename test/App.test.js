@@ -28,4 +28,10 @@ describe("App", () => {
     render(<App />);
     expect(element("menu")).not.toBeNull();
   });
+
+  it("has a button to initiate add customer and appointment action", () => {
+    render(<App />);
+    const firstButton = element("menu > li > button:first-of-type");
+    expect(firstButton).toContainText("Add customer and appointment");
+  });
 });
