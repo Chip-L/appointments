@@ -9,6 +9,12 @@ const blankCustomer = {
   phoneNumber: "",
 };
 
+const blankAppointment = {
+  service: "",
+  stylist: "",
+  startsAt: null,
+};
+
 export const App = () => {
   const [view, setView] = useState("dayView");
 
@@ -27,7 +33,7 @@ export const App = () => {
         />
       );
     case "addAppointment":
-      return <AppointmentFormLoader />;
+      return <AppointmentFormLoader original={blankAppointment} />;
     default:
       return (
         <>

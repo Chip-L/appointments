@@ -90,4 +90,20 @@ describe("App", () => {
     saveCustomer();
     expect(element("#AppointmentFormLoader")).not.toBeNull();
   });
+
+  it("passes a blank original appointment object to CustomerForm", () => {
+    const blankAppointment = {
+      service: "",
+      stylist: "",
+      startsAt: null,
+    };
+    render(<App />);
+    beginAddingCustomerAndAppointment();
+    saveCustomer();
+    expect(AppointmentFormLoader).toBeRenderedWithProps(
+      expect.objectContaining({
+        original: expect.objectContaining(blankAppointment),
+      })
+    );
+  });
 });
