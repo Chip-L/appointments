@@ -3,12 +3,15 @@ import {
   click,
   element,
   initializeReactContainer,
+  propsOf,
   render,
 } from "./reactTestExtensions";
 import { AppointmentsDayViewLoader } from "../src/AppointmentsDayViewLoader";
 import { CustomerForm } from "../src/CustomerForm";
 import { App } from "../src/App";
 import { blankCustomer } from "./builders/customer";
+import { act } from "react-dom/test-utils";
+import { AppointmentFormLoader } from "../src/AppointmentFormLoader";
 
 jest.mock("../src/AppointmentsDayViewLoader", () => ({
   AppointmentsDayViewLoader: jest.fn(() => (
@@ -20,9 +23,17 @@ jest.mock("../src/CustomerForm", () => ({
   CustomerForm: jest.fn(() => <div id="CustomerForm" />),
 }));
 
+jest.mock("../src/AppointmentFormLoader", () => ({
+  AppointmentFormLoader: jest.fn(() => <div id="AppointmentFormLoader" />),
+}));
+
 describe("App", () => {
   const beginAddingCustomerAndAppointment = () =>
     click(element("menu > li > button:first-of-type"));
+
+  const exampleCustomer = { id: 123 };
+  const saveCustomer = (customer = exampleCustomer) =>
+    act(() => propsOf(CustomerForm).onSave(customer));
 
   beforeEach(() => {
     initializeReactContainer();
@@ -71,5 +82,12 @@ describe("App", () => {
     render(<App />);
     beginAddingCustomerAndAppointment();
     expect(element("menu")).toBeNull();
+  });
+
+  it("displays the AppointmentFormLoader after the CustomerForm is submitted", () => {
+    render(<App />);
+    beginAddingCustomerAndAppointment();
+    saveCustomer();
+    expect(element("#AppointmentFormLoader")).not.toBeNull();
   });
 });
