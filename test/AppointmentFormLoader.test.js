@@ -17,7 +17,6 @@ describe("AppointmentFormLoader", () => {
   const availableTimeSlots = [{ when: todayAt(9) }];
 
   beforeEach(() => {
-    console.log(expect.getState().currentTestName);
     initializeReactContainer();
     jest
       .spyOn(global, "fetch")
@@ -30,7 +29,7 @@ describe("AppointmentFormLoader", () => {
   });
 
   it("initially passes empty array of time slots to AppointmentsForm", async () => {
-    renderAndWait(<AppointmentFormLoader />);
+    await renderAndWait(<AppointmentFormLoader />);
     expect(AppointmentForm).toBeRenderedFirstWithProps({
       availableTimeSlots: [],
     });
@@ -49,6 +48,12 @@ describe("AppointmentFormLoader", () => {
         },
       })
     );
+  });
+
+  it("displays time slots that are fetched on mount", async () => {
+    await renderAndWait(<AppointmentFormLoader />);
+
+    expect(AppointmentForm).toBeRenderedWithProps({ availableTimeSlots });
   });
 });
 
