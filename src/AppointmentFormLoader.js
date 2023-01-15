@@ -12,7 +12,6 @@ export const AppointmentFormLoader = (props) => {
         headers: { "Content-Type": "application/json" },
       });
       const data = await result.json();
-      console.log(data);
       setAvailableTimeSlots(data);
     };
 
