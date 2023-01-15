@@ -52,11 +52,6 @@ describe("App", () => {
   });
 
   it("passes a blank original customer object to CustomerForm", () => {
-    const blankCustomer = {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-    };
     render(<App />);
     beginAddingCustomerAndAppointment;
     expect(CustomerForm).toBeRenderedWithProps(

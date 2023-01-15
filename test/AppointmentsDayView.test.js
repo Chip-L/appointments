@@ -1,5 +1,6 @@
 import React from "react";
 import { Appointment, AppointmentsDayView } from "../src/AppointmentsDayView";
+import { blankCustomer } from "./builders/customer";
 import { todayAt } from "./builders/time";
 import {
   click,
@@ -26,12 +27,6 @@ import {
 // }
 
 describe("Appointment", () => {
-  const blankCustomer = {
-    firstName: "",
-    lastName: "",
-    phoneNumber: "",
-  };
-
   beforeEach(() => {
     initializeReactContainer();
   });
