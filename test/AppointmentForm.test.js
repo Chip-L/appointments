@@ -1,5 +1,6 @@
 import React from "react";
 import { AppointmentForm } from "../src/AppointmentForm";
+import { blankAppointment } from "./builders/appointment";
 import { fetchResponseError, fetchResponseOk } from "./builders/fetch";
 import { today, todayAt, tomorrowAt } from "./builders/time";
 import {
@@ -18,11 +19,6 @@ import {
 import { bodyOfLastFetchRequest } from "./spyHelpers";
 
 describe("AppointmentForm", () => {
-  const blankAppointment = {
-    service: "",
-    stylist: "",
-  };
-
   const availableTimeSlots = [
     {
       startsAt: todayAt(9),

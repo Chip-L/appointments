@@ -12,6 +12,7 @@ import { App } from "../src/App";
 import { blankCustomer } from "./builders/customer";
 import { act } from "react-dom/test-utils";
 import { AppointmentFormLoader } from "../src/AppointmentFormLoader";
+import { blankAppointment } from "./builders/appointment";
 
 jest.mock("../src/AppointmentsDayViewLoader", () => ({
   AppointmentsDayViewLoader: jest.fn(() => (
@@ -92,11 +93,6 @@ describe("App", () => {
   });
 
   it("passes a blank original appointment object to CustomerForm", () => {
-    const blankAppointment = {
-      service: "",
-      stylist: "",
-      startsAt: null,
-    };
     render(<App />);
     beginAddingCustomerAndAppointment();
     saveCustomer();
