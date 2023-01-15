@@ -13,7 +13,7 @@ describe("toBeRendered", () => {
 
   it("returns pass is true when mock has been rendered", () => {
     render(<Component />);
-    const result = toBeRendered(Component, {});
+    const result = toBeRendered(Component);
     expect(result.pass).toBe(true);
   });
 
@@ -28,20 +28,20 @@ describe("toBeRendered", () => {
   });
 
   it("returns a message that contains the source line if no match", () => {
-    render(<Component a="b" />);
-    const result = toBeRendered(Component, { c: "d" });
+    render(<Component />);
+    const result = toBeRendered();
     expect(stripTerminalColor(result.message())).toContain(
       `expect(mockedComponent).toBeRendered()`
     );
   });
 
-  // it("returns a message that contains the source line if negated match", () => {
-  //   render(<Component c="d" />);
-  //   const result = toBeRendered(Component, { c: "d" });
-  //   expect(stripTerminalColor(result.message())).toContain(
-  //     `expect(mockedComponent).not.toBeRendered({"c": "d"})`
-  //   );
-  // });
+  it("returns a message that contains the source line if negated match", () => {
+    render(<Component />);
+    const result = toBeRendered(Component);
+    expect(stripTerminalColor(result.message())).toContain(
+      `expect(mockedComponent).not.toBeRendered()`
+    );
+  });
 
   // it("returns a message that the passed object is not a mock", () => {
   //   const result = toBeRendered(<div />, {});
