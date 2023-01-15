@@ -24,8 +24,9 @@ export const App = () => {
       </menu>
       {view === "addCustomer" ? (
         <CustomerForm original={blankCustomer} />
-      ) : null}
-      <AppointmentsDayViewLoader />
+      ) : (
+        <AppointmentsDayViewLoader />
+      )}
     </>
   );
 };

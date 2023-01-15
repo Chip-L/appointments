@@ -60,4 +60,9 @@ describe("App", () => {
       })
     );
   });
+  it("hides the AppointmentsDayViewLoader when button is clicked", () => {
+    render(<App />);
+    beginAddingCustomerAndAppointment();
+    expect(element("#AppointmentsDayViewLoader")).toBeNull();
+  });
 });
