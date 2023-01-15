@@ -1,5 +1,9 @@
 import React from "react";
-import { initializeReactContainer, render } from "./reactTestExtensions";
+import {
+  element,
+  initializeReactContainer,
+  render,
+} from "./reactTestExtensions";
 import { AppointmentsDayViewLoader } from "../src/AppointmentsDayViewLoader";
 import { App } from "../src/App";
 
@@ -18,5 +22,10 @@ describe("App", () => {
     render(<App />);
 
     expect(AppointmentsDayViewLoader).toBeRendered();
+  });
+
+  it("has a menu bar", () => {
+    render(<App />);
+    expect(element("menu")).not.toBeNull();
   });
 });
