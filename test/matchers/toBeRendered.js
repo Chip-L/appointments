@@ -1,21 +1,12 @@
-import { matcherHint } from "jest-matcher-utils";
-
 export const toBeRendered = (mockedComponent) => {
-  const pass = mockedComponent?.mock?.calls[0] ? true : false;
+  const pass = mockedComponent?.mock?.calls.length > 0;
 
-  const sourceHint = () =>
-    matcherHint("toBeRendered", "mockedComponent", "", { isNot: pass });
+  const passMessage = () => "expect(mockedComponent).not.toBeRendered()";
 
-  const actualHint = () => {
-    if (!mockedComponent?.mock) {
-      return `mockedComponent is not a mock`;
-    }
-    if (!pass) {
-      return `Mocked component was never rendered`;
-    }
+  const failMessage = () => "expect(mockedComponent).toBeRendered()";
+
+  return {
+    pass,
+    message: pass ? passMessage : failMessage,
   };
-
-  const message = () => [sourceHint(), actualHint()].join("\n\n");
-
-  return { pass, message };
 };
