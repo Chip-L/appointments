@@ -10,6 +10,11 @@ module.exports = {
         exclude: /node_modules/,
         loader: "babel-loader",
       },
+      {
+        test: /\.graphql$/,
+        exclude: /node_modules/,
+        loader: "raw-loader",
+      },
     ],
   },
 };
